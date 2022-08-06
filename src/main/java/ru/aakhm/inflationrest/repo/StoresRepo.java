@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface StoresRepo extends CrudRepository<Store, Integer> {
     Optional<Store> findByName(String name);
+
+    Optional<Store> findByExternalId(String externalId);
 }

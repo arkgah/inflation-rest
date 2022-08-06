@@ -21,6 +21,8 @@ public class StoresService {
         this.utils = utils;
     }
 
+    // ========
+    // readOnly = false methods
     @Transactional
     public Store save(Store store) {
         enrichStore(store);
@@ -28,9 +30,20 @@ public class StoresService {
         return store;
     }
 
+    @Transactional
+    public void deleteById(int id) {
+        storesRepo.deleteById(id);
+    }
+
+    // readOnly = true methods
     public Optional<Store> getByName(String name) {
         return storesRepo.findByName(name);
     }
+
+    public Optional<Store> getByExternalId(String externalId) {
+        return storesRepo.findByExternalId(externalId);
+    }
+
 
     private void enrichStore(Store store) {
         store.setExternalId(utils.generateStoreExternalId());
