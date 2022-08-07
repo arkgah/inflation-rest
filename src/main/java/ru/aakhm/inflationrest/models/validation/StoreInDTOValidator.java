@@ -1,24 +1,24 @@
 package ru.aakhm.inflationrest.models.validation;
 
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import ru.aakhm.inflationrest.dto.StoreInDTO;
 import ru.aakhm.inflationrest.models.Store;
 import ru.aakhm.inflationrest.services.StoresService;
+import ru.aakhm.inflationrest.utils.Utils;
 
 import java.util.Optional;
 
 @Component
 public class StoreInDTOValidator implements Validator {
     private final StoresService storesService;
-    private final MessageSource messageSource;
+    private final Utils utils;
 
-    public StoreInDTOValidator(StoresService storesService, MessageSource messageSource) {
+    public StoreInDTOValidator(StoresService storesService, MessageSource messageSource, Utils utils) {
         this.storesService = storesService;
-        this.messageSource = messageSource;
+        this.utils = utils;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class StoreInDTOValidator implements Validator {
         StoreInDTO storeInDTO = (StoreInDTO) target;
         Optional<Store> storeDB = storesService.getByName(storeInDTO.getName());
         if (storeDB.isPresent()) {
-            errors.rejectValue("name", messageSource.getMessage("store.name.uniq.err", null, LocaleContextHolder.getLocale()));
+            errors.rejectValue("name", utils.getMessageFromBundle("store.name.uniq.err"));
         }
     }
 }
