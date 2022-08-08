@@ -6,19 +6,19 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import ru.aakhm.inflationrest.dto.PersonInDTO;
 import ru.aakhm.inflationrest.models.Person;
-import ru.aakhm.inflationrest.services.PeopleService;
+import ru.aakhm.inflationrest.services.PersonDetailsService;
 import ru.aakhm.inflationrest.utils.Utils;
 
 import java.util.Optional;
 
 @Component
 public class PersonInDTOValidator implements Validator {
-    private final PeopleService peopleService;
+    private final PersonDetailsService personDetailsService;
     private final Utils utils;
 
     @Autowired
-    public PersonInDTOValidator(PeopleService peopleService, Utils utils) {
-        this.peopleService = peopleService;
+    public PersonInDTOValidator(PersonDetailsService personDetailsService, Utils utils) {
+        this.personDetailsService = personDetailsService;
         this.utils = utils;
     }
 
@@ -30,7 +30,7 @@ public class PersonInDTOValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         PersonInDTO personInDTO = (PersonInDTO) target;
-        Optional<Person> person = peopleService.getByLogin(personInDTO.getLogin());
+        Optional<Person> person = personDetailsService.getByLogin(personInDTO.getLogin());
         if (person.isPresent()) {
             errors.rejectValue("login", utils.getMessageFromBundle("person.login.uniq.err"));
         }

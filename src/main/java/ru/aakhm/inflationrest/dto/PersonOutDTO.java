@@ -11,10 +11,6 @@ public class PersonOutDTO {
     @Size(min = 3, max = 100, message = "{person.login.size.err}")
     private String login;
 
-    @NotEmpty(message = "{person.password.empty.err}")
-    @Size(min = 8, max = 30, message = "person.password.size.err")
-    private String password;
-
     @NotEmpty(message = "{person.firstname.empty.err}")
     @Size(min = 1, max = 50, message = "{person.firstname.size.err}")
     private String firstName;

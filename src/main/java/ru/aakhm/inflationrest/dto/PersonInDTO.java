@@ -12,7 +12,7 @@ public class PersonInDTO {
     private String login;
 
     @NotEmpty(message = "{person.password.empty.err}")
-    @Size(min = 8, max = 30, message = "person.password.size.err")
+    @Size(min = 8, max = 30, message = "{person.password.size.err}")
     private String password;
 
     @NotEmpty(message = "{person.firstname.empty.err}")

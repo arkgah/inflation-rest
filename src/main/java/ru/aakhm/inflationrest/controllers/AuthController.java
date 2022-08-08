@@ -1,35 +1,84 @@
 package ru.aakhm.inflationrest.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import ru.aakhm.inflationrest.dto.PeopleOutDTO;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import ru.aakhm.inflationrest.dto.ErrorDTO;
+import ru.aakhm.inflationrest.dto.PersonInDTO;
+import ru.aakhm.inflationrest.dto.PersonLoginDTO;
+import ru.aakhm.inflationrest.dto.PersonOutDTO;
 import ru.aakhm.inflationrest.models.validation.PersonInDTOValidator;
-import ru.aakhm.inflationrest.services.PeopleService;
+import ru.aakhm.inflationrest.models.validation.except.person.PersonLoginException;
+import ru.aakhm.inflationrest.models.validation.except.person.PersonNotCreatedException;
+import ru.aakhm.inflationrest.security.JWTUtil;
+import ru.aakhm.inflationrest.services.RegistrationService;
 import ru.aakhm.inflationrest.utils.Utils;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-    private final PeopleService peopleService;
+    private final RegistrationService registrationService;
     private final PersonInDTOValidator personInDTOValidator;
     private final Utils utils;
+    private final JWTUtil jwtUtil;
+    private final AuthenticationManager authenticationManager;
+
+    @Value("${security.bearer:Bearer }")
+    private String BEARER;
 
     @Autowired
-    public AuthController(PeopleService peopleService, PersonInDTOValidator personInDTOValidator, Utils utils) {
-        this.peopleService = peopleService;
+    public AuthController(RegistrationService registrationService, PersonInDTOValidator personInDTOValidator, Utils utils, JWTUtil jwtUtil, AuthenticationManager authenticationManager) {
+        this.registrationService = registrationService;
+
         this.personInDTOValidator = personInDTOValidator;
         this.utils = utils;
+        this.jwtUtil = jwtUtil;
+        this.authenticationManager = authenticationManager;
     }
 
-    @GetMapping
-    public ResponseEntity<PeopleOutDTO> index() {
-        PeopleOutDTO peopleOutDTO = new PeopleOutDTO();
-        peopleOutDTO.setPeople(peopleService.index());
-        return new ResponseEntity<>(peopleOutDTO, HttpStatus.OK);
+    @PostMapping("/registration")
+    public ResponseEntity<PersonOutDTO> performRegistration(@RequestBody @Valid PersonInDTO personInDTO, BindingResult bindingResult) {
+        personInDTOValidator.validate(personInDTO, bindingResult);
+        if (bindingResult.hasErrors()) {
+            throw new PersonNotCreatedException(utils.getErrorMsg(bindingResult));
+        }
+
+        PersonOutDTO personOutDTO = registrationService.register(personInDTO);
+        HttpHeaders respHeaders = new HttpHeaders();
+        respHeaders.set(HttpHeaders.AUTHORIZATION, BEARER + jwtUtil.generateToken(personOutDTO.getLogin()));
+
+        return new ResponseEntity<>(personOutDTO, respHeaders, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> performLogin(@RequestBody @Valid PersonLoginDTO personLoginDTO) {
+        UsernamePasswordAuthenticationToken authInputToken = new UsernamePasswordAuthenticationToken(
+                personLoginDTO.getLogin(), personLoginDTO.getPassword());
+        try {
+            authenticationManager.authenticate(authInputToken);
+        } catch (BadCredentialsException e) {
+            throw new PersonLoginException(utils.getMessageFromBundle("person.login.err"));
+        }
+
+        HttpHeaders respHeaders = new HttpHeaders();
+        respHeaders.set(HttpHeaders.AUTHORIZATION, BEARER + jwtUtil.generateToken(personLoginDTO.getLogin()));
+        return ResponseEntity.ok().headers(respHeaders).build();
+    }
+
+    @ExceptionHandler
+    ResponseEntity<ErrorDTO> handleException(RuntimeException e) {
+        ErrorDTO errorDTO = new ru.aakhm.inflationrest.dto.ErrorDTO();
+        errorDTO.setMessage(e.getMessage());
+        return new ResponseEntity<>(errorDTO, HttpStatus.BAD_REQUEST);
     }
 
 
