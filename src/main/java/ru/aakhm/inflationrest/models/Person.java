@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
+@Table(name = "person")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -25,6 +26,7 @@ public class Person {
     private String login;
 
     @Column(name = "password")
+    @NotEmpty(message = "{person.password.empty.err}")
     private String password;
 
     @Column(name = "first_name")
@@ -36,6 +38,10 @@ public class Person {
     @NotEmpty(message = "{person.lastname.empty.err}")
     @Size(min = 1, max = 50, message = "{person.lastname.size.err}")
     private String lastName;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
+    private PersonRole role;
 
     @Column(name = "external_id")
     @NotNull
