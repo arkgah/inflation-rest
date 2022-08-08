@@ -2,7 +2,6 @@ package ru.aakhm.inflationrest.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.aakhm.inflationrest.dto.ErrorDTO;
@@ -17,7 +16,7 @@ import ru.aakhm.inflationrest.utils.Utils;
 
 import javax.validation.Valid;
 
-@Controller
+@RestController
 @RequestMapping("/stores")
 public class StoresController {
     private final StoresService storesService;
