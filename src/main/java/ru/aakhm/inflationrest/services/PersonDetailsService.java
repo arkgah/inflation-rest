@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.aakhm.inflationrest.dto.PersonInDTO;
 import ru.aakhm.inflationrest.dto.PersonOutDTO;
 import ru.aakhm.inflationrest.models.Person;
+import ru.aakhm.inflationrest.models.validation.except.person.PersonNotFoundException;
 import ru.aakhm.inflationrest.repo.PeopleRepo;
 import ru.aakhm.inflationrest.repo.RolesRepo;
 import ru.aakhm.inflationrest.security.PersonDetails;
@@ -48,6 +49,12 @@ public class PersonDetailsService implements UserDetailsService {
 
     public Optional<Person> getByLogin(String login) {
         return peopleRepo.findByLogin(login);
+    }
+
+    public PersonOutDTO getByExternalId(String externalId) {
+        return peopleRepo.findByExternalId(externalId)
+                .map(this::fromPersonToPersonOutDto)
+                .orElseThrow(() -> new PersonNotFoundException(utils.getMessageFromBundle("person.notfound.err")));
     }
 
     public List<PersonOutDTO> index() {

@@ -35,6 +35,9 @@ public class AuthController {
     @Value("${security.bearer:Bearer }")
     private String BEARER;
 
+    @Value("${header.external_id:USERID}")
+    private String HEADER_EXTERNAL_ID;
+
     @Autowired
     public AuthController(RegistrationService registrationService, PersonInDTOValidator personInDTOValidator, Utils utils, JWTUtil jwtUtil, AuthenticationManager authenticationManager) {
         this.registrationService = registrationService;
@@ -55,7 +58,7 @@ public class AuthController {
         PersonOutDTO personOutDTO = registrationService.register(personInDTO);
         HttpHeaders respHeaders = new HttpHeaders();
         respHeaders.set(HttpHeaders.AUTHORIZATION, BEARER + jwtUtil.generateToken(personOutDTO.getLogin()));
-
+        respHeaders.set(HEADER_EXTERNAL_ID, personOutDTO.getExternalId());
         return new ResponseEntity<>(personOutDTO, respHeaders, HttpStatus.CREATED);
     }
 
@@ -71,6 +74,7 @@ public class AuthController {
 
         HttpHeaders respHeaders = new HttpHeaders();
         respHeaders.set(HttpHeaders.AUTHORIZATION, BEARER + jwtUtil.generateToken(personLoginDTO.getLogin()));
+        respHeaders.set(HEADER_EXTERNAL_ID, registrationService.getExternalIdByLogin(personLoginDTO.getLogin()));
         return ResponseEntity.ok().headers(respHeaders).build();
     }
 

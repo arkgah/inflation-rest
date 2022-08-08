@@ -14,27 +14,30 @@ import java.util.Date;
 @Component
 public class JWTUtil {
     @Value("${security.jwt_secret}")
-    private String secret;
+    private String SECRET;
+
+    @Value("${security.jwt.expire.minutes:60}")
+    private int EXPIRE_MINUTES;
 
     @Value("${security.issuer}")
-    private String issuer;
+    private String ISSUER;
 
     public String generateToken(String login) {
-        Date expirationDate = Date.from(ZonedDateTime.now().plusMinutes(60).toInstant());
+        Date expirationDate = Date.from(ZonedDateTime.now().plusMinutes(EXPIRE_MINUTES).toInstant());
 
         return JWT.create()
                 .withSubject("User details")
                 .withClaim("login", login)
                 .withIssuedAt(new Date())
-                .withIssuer(issuer)
+                .withIssuer(ISSUER)
                 .withExpiresAt(expirationDate)
-                .sign(Algorithm.HMAC256(secret));
+                .sign(Algorithm.HMAC256(SECRET));
     }
 
     public String validateTokenAndRetrieveClaim(String token) throws JWTVerificationException {
-        JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secret))
+        JWTVerifier verifier = JWT.require(Algorithm.HMAC256(SECRET))
                 .withSubject("User details")
-                .withIssuer(issuer)
+                .withIssuer(ISSUER)
                 .build();
         DecodedJWT jwt = verifier.verify(token);
         return jwt.getClaim("login").asString();

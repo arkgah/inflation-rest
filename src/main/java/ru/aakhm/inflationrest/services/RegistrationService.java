@@ -9,6 +9,7 @@ import ru.aakhm.inflationrest.dto.PersonInDTO;
 import ru.aakhm.inflationrest.dto.PersonOutDTO;
 import ru.aakhm.inflationrest.models.Person;
 import ru.aakhm.inflationrest.models.PersonRole;
+import ru.aakhm.inflationrest.models.validation.except.person.PersonNotFoundException;
 import ru.aakhm.inflationrest.models.validation.except.person.PersonRoleNotFoundException;
 import ru.aakhm.inflationrest.repo.PeopleRepo;
 import ru.aakhm.inflationrest.repo.RolesRepo;
@@ -43,6 +44,11 @@ public class RegistrationService {
         person.setRole(role.orElseThrow(() -> new PersonRoleNotFoundException(utils.getMessageFromBundle("personrole.notfound.err"))));
         person = peopleRepo.save(person);
         return fromPersonToPersonOutDto(person);
+    }
+
+    public String getExternalIdByLogin(String login) {
+        Optional<Person> person = peopleRepo.findByLogin(login);
+        return person.map(Person::getExternalId).orElseThrow(() -> new PersonNotFoundException(utils.getMessageFromBundle("person.notfound.err")));
     }
 
     private Person fromPersonInDtoToSPerson(PersonInDTO personInDTO) {
