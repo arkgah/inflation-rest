@@ -36,8 +36,8 @@ public class StoresService {
     public StoreOutDTO save(StoreInDTO storeInDTO) {
         Store store = fromStoreInDtoToStore(storeInDTO);
         enrichStore(store);
-        storesRepo.save(store);
-        return fromStoreToStoreOutDTO(store);
+        Store savedStore = storesRepo.save(store);
+        return fromStoreToStoreOutDTO(savedStore);
     }
 
     @Transactional
@@ -71,7 +71,7 @@ public class StoresService {
     public StoreOutDTO getByExternalId(String externalId) {
         return storesRepo.findByExternalId(externalId)
                 .map(this::fromStoreToStoreOutDTO)
-                .orElseThrow(() -> new StoreNotUpdatedException(utils.getMessageFromBundle("store.notfound.err")));
+                .orElseThrow(() -> new StoreNotFoundException(utils.getMessageFromBundle("store.notfound.err")));
     }
 
     private Optional<Store> findByExternalId(String externalId) {
