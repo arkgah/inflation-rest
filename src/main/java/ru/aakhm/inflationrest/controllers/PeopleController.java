@@ -38,6 +38,15 @@ public class PeopleController {
         return new ResponseEntity<>(personDetailsService.getByExternalId(externalId), HttpStatus.OK);
     }
 
+    @GetMapping("/login/{login}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or #login == principal.getPerson().getLogin()")
+    public ResponseEntity<PersonOutDTO> getByLogin(@PathVariable("login") String login) {
+        return new ResponseEntity<>(
+                personDetailsService.getByLogin(login)
+                        .orElseThrow(() -> new PersonNotFoundException(utils.getMessageFromBundle("person.notfound.err"))),
+                HttpStatus.OK);
+    }
+
     @ExceptionHandler
     ResponseEntity<ErrorDTO> handleException(PersonNotFoundException e) {
         ErrorDTO errorDTO = new ru.aakhm.inflationrest.dto.ErrorDTO();

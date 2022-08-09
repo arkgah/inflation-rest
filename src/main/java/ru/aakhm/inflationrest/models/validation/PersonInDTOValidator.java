@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import ru.aakhm.inflationrest.dto.PersonInDTO;
-import ru.aakhm.inflationrest.models.Person;
+import ru.aakhm.inflationrest.dto.PersonOutDTO;
 import ru.aakhm.inflationrest.services.PersonDetailsService;
 import ru.aakhm.inflationrest.utils.Utils;
 
@@ -30,7 +30,7 @@ public class PersonInDTOValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         PersonInDTO personInDTO = (PersonInDTO) target;
-        Optional<Person> person = personDetailsService.getByLogin(personInDTO.getLogin());
+        Optional<PersonOutDTO> person = personDetailsService.getByLogin(personInDTO.getLogin());
         if (person.isPresent()) {
             errors.rejectValue("login", utils.getMessageFromBundle("person.login.uniq.err"));
         }

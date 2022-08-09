@@ -47,8 +47,8 @@ public class PersonDetailsService implements UserDetailsService {
         return person.map(PersonDetails::new).orElseThrow(() -> new UsernameNotFoundException(utils.getMessageFromBundle("person.login.notfound.err")));
     }
 
-    public Optional<Person> getByLogin(String login) {
-        return peopleRepo.findByLogin(login);
+    public Optional<PersonOutDTO> getByLogin(String login) {
+        return peopleRepo.findByLogin(login).map(this::fromPersonToPersonOutDto);
     }
 
     public PersonOutDTO getByExternalId(String externalId) {
