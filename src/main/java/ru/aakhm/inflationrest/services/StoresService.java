@@ -42,7 +42,7 @@ public class StoresService {
 
     @Transactional
     public void deleteByExternalId(String externalId) {
-        Store store = getByExternalId(externalId)
+        Store store = findByExternalId(externalId)
                 .orElseThrow(
                         () -> new StoreNotFoundException(utils.getMessageFromBundle("store.notfound.err")));
 
@@ -51,7 +51,7 @@ public class StoresService {
 
     @Transactional
     public StoreOutDTO update(String externalId, StoreInDTO updatedStore) {
-        Store storeEntity = getByExternalId(externalId)
+        Store storeEntity = findByExternalId(externalId)
                 .orElseThrow(
                         () -> new StoreNotUpdatedException(utils.getMessageFromBundle("store.notfound.err")));
         storeEntity.setName(updatedStore.getName());
@@ -64,11 +64,17 @@ public class StoresService {
         return storesRepo.findAll().stream().map(this::fromStoreToStoreOutDTO).collect(Collectors.toList());
     }
 
-    public Optional<Store> getByName(String name) {
-        return storesRepo.findByName(name);
+    public Optional<StoreOutDTO> getByName(String name) {
+        return storesRepo.findByName(name).map(this::fromStoreToStoreOutDTO);
     }
 
-    public Optional<Store> getByExternalId(String externalId) {
+    public StoreOutDTO getByExternalId(String externalId) {
+        return storesRepo.findByExternalId(externalId)
+                .map(this::fromStoreToStoreOutDTO)
+                .orElseThrow(() -> new StoreNotUpdatedException(utils.getMessageFromBundle("store.notfound.err")));
+    }
+
+    private Optional<Store> findByExternalId(String externalId) {
         return storesRepo.findByExternalId(externalId);
     }
 

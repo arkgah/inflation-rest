@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import ru.aakhm.inflationrest.dto.StoreInDTO;
-import ru.aakhm.inflationrest.models.Store;
+import ru.aakhm.inflationrest.dto.StoreOutDTO;
 import ru.aakhm.inflationrest.services.StoresService;
 import ru.aakhm.inflationrest.utils.Utils;
 
@@ -29,8 +29,8 @@ public class StoreInDTOValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         StoreInDTO storeInDTO = (StoreInDTO) target;
-        Optional<Store> storeDB = storesService.getByName(storeInDTO.getName());
-        if (storeDB.isPresent()) {
+        Optional<StoreOutDTO> store = storesService.getByName(storeInDTO.getName());
+        if (store.isPresent()) {
             errors.rejectValue("name", utils.getMessageFromBundle("store.name.uniq.err"));
         }
     }
