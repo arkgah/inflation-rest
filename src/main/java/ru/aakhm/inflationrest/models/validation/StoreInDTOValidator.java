@@ -4,8 +4,8 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import ru.aakhm.inflationrest.dto.StoreInDTO;
-import ru.aakhm.inflationrest.dto.StoreOutDTO;
+import ru.aakhm.inflationrest.dto.in.StoreInDTO;
+import ru.aakhm.inflationrest.dto.out.StoreOutDTO;
 import ru.aakhm.inflationrest.services.StoresService;
 import ru.aakhm.inflationrest.utils.Utils;
 

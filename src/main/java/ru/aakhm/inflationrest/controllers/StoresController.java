@@ -5,10 +5,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.aakhm.inflationrest.dto.ErrorDTO;
-import ru.aakhm.inflationrest.dto.StoreInDTO;
-import ru.aakhm.inflationrest.dto.StoreOutDTO;
-import ru.aakhm.inflationrest.dto.StoresOutDTO;
+import ru.aakhm.inflationrest.dto.in.StoreInDTO;
+import ru.aakhm.inflationrest.dto.out.ErrorDTO;
+import ru.aakhm.inflationrest.dto.out.StoreOutDTO;
+import ru.aakhm.inflationrest.dto.out.StoresOutDTO;
 import ru.aakhm.inflationrest.models.validation.StoreInDTOValidator;
 import ru.aakhm.inflationrest.models.validation.except.store.StoreNotCreatedException;
 import ru.aakhm.inflationrest.models.validation.except.store.StoreNotFoundException;
@@ -83,14 +83,14 @@ public class StoresController {
 
     @ExceptionHandler
     ResponseEntity<ErrorDTO> handleException(RuntimeException e) {
-        ErrorDTO errorDTO = new ru.aakhm.inflationrest.dto.ErrorDTO();
+        ErrorDTO errorDTO = new ErrorDTO();
         errorDTO.setMessage(e.getMessage());
         return new ResponseEntity<>(errorDTO, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler
     ResponseEntity<ErrorDTO> handleException(StoreNotFoundException e) {
-        ErrorDTO errorDTO = new ru.aakhm.inflationrest.dto.ErrorDTO();
+        ErrorDTO errorDTO = new ErrorDTO();
         errorDTO.setMessage(e.getMessage());
         return new ResponseEntity<>(errorDTO, HttpStatus.NOT_FOUND);
     }

@@ -7,10 +7,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.aakhm.inflationrest.dto.PersonInDTO;
-import ru.aakhm.inflationrest.dto.PersonOutDTO;
+import ru.aakhm.inflationrest.dto.in.PersonInDTO;
+import ru.aakhm.inflationrest.dto.out.PersonOutDTO;
 import ru.aakhm.inflationrest.models.Person;
+import ru.aakhm.inflationrest.models.PersonRole;
 import ru.aakhm.inflationrest.models.validation.except.person.PersonNotFoundException;
+import ru.aakhm.inflationrest.models.validation.except.person.PersonRoleNotFoundException;
 import ru.aakhm.inflationrest.repo.PeopleRepo;
 import ru.aakhm.inflationrest.repo.RolesRepo;
 import ru.aakhm.inflationrest.security.PersonDetails;
@@ -37,7 +39,18 @@ public class PersonDetailsService implements UserDetailsService {
     }
 
     // readOnly = false methods
+    @Transactional
+    public void assignRole(String externalId, String roleName) {
+        Optional<PersonRole> role = rolesRepo.getByName(roleName);
+        Optional<Person> person = peopleRepo.findByExternalId(externalId);
 
+        person.ifPresentOrElse(p -> p.setRole(
+                        role.orElseThrow(() -> new PersonRoleNotFoundException(utils.getMessageFromBundle("personrole.notfound.err")))
+                ),
+                () -> {
+                    throw new PersonNotFoundException(utils.getMessageFromBundle("person.notfound.err"));
+                });
+    }
 
     // readOnly = true methods
     @Override

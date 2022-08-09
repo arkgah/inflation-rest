@@ -5,9 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ru.aakhm.inflationrest.dto.ErrorDTO;
-import ru.aakhm.inflationrest.dto.PeopleOutDTO;
-import ru.aakhm.inflationrest.dto.PersonOutDTO;
+import ru.aakhm.inflationrest.dto.out.ErrorDTO;
+import ru.aakhm.inflationrest.dto.out.PeopleOutDTO;
+import ru.aakhm.inflationrest.dto.out.PersonOutDTO;
 import ru.aakhm.inflationrest.models.validation.except.person.PersonNotFoundException;
 import ru.aakhm.inflationrest.services.PersonDetailsService;
 import ru.aakhm.inflationrest.utils.Utils;
@@ -47,16 +47,23 @@ public class PeopleController {
                 HttpStatus.OK);
     }
 
+    @PatchMapping("/{id}/role/{name}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public HttpStatus assignRole(@PathVariable("id") String externalId, @PathVariable("name") String roleName) {
+        personDetailsService.assignRole(externalId, roleName);
+        return HttpStatus.OK;
+    }
+
     @ExceptionHandler
     ResponseEntity<ErrorDTO> handleException(PersonNotFoundException e) {
-        ErrorDTO errorDTO = new ru.aakhm.inflationrest.dto.ErrorDTO();
+        ErrorDTO errorDTO = new ErrorDTO();
         errorDTO.setMessage(e.getMessage());
         return new ResponseEntity<>(errorDTO, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler
     ResponseEntity<ErrorDTO> handleException(RuntimeException e) {
-        ErrorDTO errorDTO = new ru.aakhm.inflationrest.dto.ErrorDTO();
+        ErrorDTO errorDTO = new ErrorDTO();
         errorDTO.setMessage(e.getMessage());
         return new ResponseEntity<>(errorDTO, HttpStatus.BAD_REQUEST);
     }

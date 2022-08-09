@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import ru.aakhm.inflationrest.dto.PersonInDTO;
-import ru.aakhm.inflationrest.dto.PersonOutDTO;
+import ru.aakhm.inflationrest.dto.in.PersonInDTO;
+import ru.aakhm.inflationrest.dto.out.PersonOutDTO;
 import ru.aakhm.inflationrest.services.PersonDetailsService;
 import ru.aakhm.inflationrest.utils.Utils;
 

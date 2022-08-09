@@ -10,10 +10,10 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.aakhm.inflationrest.dto.ErrorDTO;
-import ru.aakhm.inflationrest.dto.PersonInDTO;
-import ru.aakhm.inflationrest.dto.PersonLoginDTO;
-import ru.aakhm.inflationrest.dto.PersonOutDTO;
+import ru.aakhm.inflationrest.dto.in.PersonInDTO;
+import ru.aakhm.inflationrest.dto.in.PersonLoginDTO;
+import ru.aakhm.inflationrest.dto.out.ErrorDTO;
+import ru.aakhm.inflationrest.dto.out.PersonOutDTO;
 import ru.aakhm.inflationrest.models.validation.PersonInDTOValidator;
 import ru.aakhm.inflationrest.models.validation.except.person.PersonLoginException;
 import ru.aakhm.inflationrest.models.validation.except.person.PersonNotCreatedException;
@@ -80,7 +80,7 @@ public class AuthController {
 
     @ExceptionHandler
     ResponseEntity<ErrorDTO> handleException(RuntimeException e) {
-        ErrorDTO errorDTO = new ru.aakhm.inflationrest.dto.ErrorDTO();
+        ErrorDTO errorDTO = new ErrorDTO();
         errorDTO.setMessage(e.getMessage());
         return new ResponseEntity<>(errorDTO, HttpStatus.BAD_REQUEST);
     }

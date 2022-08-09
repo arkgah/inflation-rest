@@ -1,4 +1,4 @@
-package ru.aakhm.inflationrest.dto;
+package ru.aakhm.inflationrest.dto.out;
 
 import lombok.Data;
 
