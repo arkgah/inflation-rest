@@ -6,28 +6,33 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
-import java.util.List;
 
 @Entity
-@Table(name = "product_category")
+@Table(name = "product")
 @Getter
 @Setter
-public class ProductCategory {
+public class Product {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "name")
-    @NotEmpty(message = "{productcategory.name.empty.err}")
-    @Size(min = 2, max = 100, message = "{productcategory.name.size.err}")
+    @NotEmpty(message = "{product.name.empty.err}")
+    @Size(min = 2, max = 100, message = "{product.name.size.err}")
     private String name;
+
+    @Column(name = "unit")
+    @Positive(message = "{product.unit.value.err}")
+    private double unit;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    private ProductCategory category;
 
     @Column(name = "external_id")
     @NotNull
     private String externalId;
-
-    @OneToMany(mappedBy = "category")
-    private List<Product> products;
 }
