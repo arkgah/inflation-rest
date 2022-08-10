@@ -40,7 +40,7 @@ public class PeopleController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or #externalId == principal.getPerson().getExternalId()")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or #login == principal.getPerson().getLogin()")
     public ResponseEntity<PersonOutDTO> getByExternalId(@PathVariable("id") String externalId) {
         return new ResponseEntity<>(personDetailsService.getByExternalId(externalId), HttpStatus.OK);
     }
