@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -60,6 +61,18 @@ public class AuthController {
         respHeaders.set(HttpHeaders.AUTHORIZATION, BEARER + jwtUtil.generateToken(personOutDTO.getLogin()));
         respHeaders.set(HEADER_EXTERNAL_ID, personOutDTO.getExternalId());
         return new ResponseEntity<>(personOutDTO, respHeaders, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/update/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or #login == principal.getPerson().getLogin()")
+    public ResponseEntity<PersonOutDTO> update(@PathVariable("id") String externalId, @RequestBody @Valid PersonInDTO personInDTO, BindingResult bindingResult) {
+        personInDTOValidator.validate(personInDTO, bindingResult);
+        if (bindingResult.hasErrors()) {
+            throw new PersonNotCreatedException(utils.getErrorMsg(bindingResult));
+        }
+
+        PersonOutDTO personOutDTO = registrationService.update(externalId, personInDTO);
+        return new ResponseEntity<>(personOutDTO, HttpStatus.OK);
     }
 
     @PostMapping("/login")

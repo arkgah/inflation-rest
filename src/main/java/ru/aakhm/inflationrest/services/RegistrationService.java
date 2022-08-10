@@ -37,7 +37,7 @@ public class RegistrationService {
 
     @Transactional
     public PersonOutDTO register(PersonInDTO personInDTO) {
-        Person person = fromPersonInDtoToSPerson(personInDTO);
+        Person person = fromPersonInDtoToPerson(personInDTO);
         enrichPerson(person);
         person.setPassword(passwordEncoder.encode(person.getPassword()));
         Optional<PersonRole> role = rolesRepo.getByName(Role.ROLE_USER.name());
@@ -46,12 +46,31 @@ public class RegistrationService {
         return fromPersonToPersonOutDto(person);
     }
 
+    @Transactional
+    public PersonOutDTO update(String externalId, PersonInDTO personInDTO) {
+        Person oldPersonEntity = findByExternalId(externalId);
+        Person newPersonEntity = fromPersonInDtoToPerson(personInDTO);
+
+        newPersonEntity.setPassword(passwordEncoder.encode(newPersonEntity.getPassword()));
+
+        oldPersonEntity.setPassword(newPersonEntity.getPassword());
+        oldPersonEntity.setLastName(newPersonEntity.getFirstName());
+        oldPersonEntity.setFirstName(newPersonEntity.getLastName());
+
+        newPersonEntity = peopleRepo.save(oldPersonEntity);
+        return fromPersonToPersonOutDto(newPersonEntity);
+    }
+
     public String getExternalIdByLogin(String login) {
         Optional<Person> person = peopleRepo.findByLogin(login);
         return person.map(Person::getExternalId).orElseThrow(() -> new PersonNotFoundException(utils.getMessageFromBundle("person.notfound.err")));
     }
 
-    private Person fromPersonInDtoToSPerson(PersonInDTO personInDTO) {
+    private Person findByExternalId(String externalId) {
+        return peopleRepo.findByExternalId(externalId).orElseThrow(() -> new PersonNotFoundException(utils.getMessageFromBundle("person.notfound.err")));
+    }
+
+    private Person fromPersonInDtoToPerson(PersonInDTO personInDTO) {
         return modelMapper.map(personInDTO, Person.class);
     }
 

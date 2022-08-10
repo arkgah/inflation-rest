@@ -32,6 +32,13 @@ public class PeopleController {
         return new ResponseEntity<>(peopleOutDTO, HttpStatus.OK);
     }
 
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public HttpStatus delete(@PathVariable String id) {
+        // TODO
+        return HttpStatus.OK;
+    }
+
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN') or #externalId == principal.getPerson().getExternalId()")
     public ResponseEntity<PersonOutDTO> getByExternalId(@PathVariable("id") String externalId) {

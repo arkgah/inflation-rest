@@ -74,7 +74,7 @@ public class PersonDetailsService implements UserDetailsService {
         return peopleRepo.findAll().stream().map(this::fromPersonToPersonOutDto).collect(Collectors.toList());
     }
 
-    private Person fromPersonInDtoToSPerson(PersonInDTO personInDTO) {
+    private Person fromPersonInDtoToPerson(PersonInDTO personInDTO) {
         return modelMapper.map(personInDTO, Person.class);
     }
 
