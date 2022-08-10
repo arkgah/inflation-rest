@@ -60,6 +60,6 @@ public class RegistrationService {
     }
 
     private void enrichPerson(Person person) {
-        person.setExternalId(utils.generatePersonSecureId());
+        person.setExternalId(utils.generateExternalId());
     }
 }

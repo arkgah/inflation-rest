@@ -26,7 +26,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.jwtFilter = jwtFilter;
     }
 
-    // настраиваем через сервис вместо auth провайдера
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(personDetailsService).passwordEncoder(getPasswordEncoder());

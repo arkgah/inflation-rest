@@ -53,7 +53,7 @@ class StoresServiceTest {
 
         when(storesRepo.findByName(storeInDTO.getName())).thenReturn(Optional.empty());
         when(storesRepo.save(any(Store.class))).thenReturn(store);
-        when(utils.generateStoreExternalId()).thenReturn(EXTERNAL_ID);
+        when(utils.generateExternalId()).thenReturn(EXTERNAL_ID);
 
 
         when(modelMapper.map(any(StoreInDTO.class), any())).thenReturn(store);

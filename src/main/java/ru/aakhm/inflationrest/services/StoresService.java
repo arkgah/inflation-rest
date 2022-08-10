@@ -59,6 +59,7 @@ public class StoresService {
         return fromStoreToStoreOutDTO(storeEntity);
     }
 
+    // ========
     // readOnly = true methods
     public List<StoreOutDTO> index() {
         return storesRepo.findAll().stream().map(this::fromStoreToStoreOutDTO).collect(Collectors.toList());
@@ -80,7 +81,7 @@ public class StoresService {
 
 
     private void enrichStore(Store store) {
-        store.setExternalId(utils.generateStoreExternalId());
+        store.setExternalId(utils.generateExternalId());
     }
 
     private Store fromStoreInDtoToStore(StoreInDTO storeInDTO) {

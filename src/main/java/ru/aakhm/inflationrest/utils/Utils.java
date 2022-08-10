@@ -18,23 +18,15 @@ public class Utils {
 
     private final MessageSource messageSource;
 
-    @Value("${store.external_id.length:30}")
-    private int STORE_EXTERNAL_ID_LENGTH;
-
-    @Value("${person.external_id.length:30}")
-    private int PERSON_EXTERNAL_ID_LENGTH;
+    @Value("${external_id.length:30}")
+    private int EXTERNAL_ID_LENGTH;
 
     public Utils(MessageSource messageSource) {
         this.messageSource = messageSource;
     }
 
-    public String generateStoreExternalId() {
-        return generateRandomString(STORE_EXTERNAL_ID_LENGTH);
-    }
-
-
-    public String generatePersonSecureId() {
-        return generateRandomString(PERSON_EXTERNAL_ID_LENGTH);
+    public String generateExternalId() {
+        return generateRandomString(EXTERNAL_ID_LENGTH);
     }
 
     public String generateRandomString(int length) {

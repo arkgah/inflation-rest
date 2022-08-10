@@ -83,7 +83,7 @@ public class PersonDetailsService implements UserDetailsService {
     }
 
     private void enrichPerson(Person person) {
-        person.setExternalId(utils.generatePersonSecureId());
+        person.setExternalId(utils.generateExternalId());
     }
 
 }
