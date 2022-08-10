@@ -1,19 +1,18 @@
 package ru.aakhm.inflationrest.models;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Table(name = "store")
 @Getter
 @Setter
-@NoArgsConstructor
 public class Store {
     @Id
     @Column(name = "id")
@@ -28,4 +27,7 @@ public class Store {
     @Column(name = "external_id")
     @NotNull
     private String externalId;
+
+    @OneToMany(mappedBy = "store")
+    private List<Purchase> purchases;
 }

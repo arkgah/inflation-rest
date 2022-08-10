@@ -8,6 +8,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Table(name = "product")
@@ -28,11 +29,16 @@ public class Product {
     @Positive(message = "{product.unit.value.err}")
     private double unit;
 
+    @Column(name = "external_id")
+    @NotNull
+    private String externalId;
+
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private ProductCategory category;
 
-    @Column(name = "external_id")
-    @NotNull
-    private String externalId;
+    @OneToMany(mappedBy = "product")
+    private List<Purchase> purchases;
+
+
 }

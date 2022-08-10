@@ -1,7 +1,6 @@
 package ru.aakhm.inflationrest.models;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -13,7 +12,6 @@ import javax.validation.constraints.Size;
 @Table(name = "person")
 @Getter
 @Setter
-@NoArgsConstructor
 public class Person {
     @Id
     @Column(name = "id")
