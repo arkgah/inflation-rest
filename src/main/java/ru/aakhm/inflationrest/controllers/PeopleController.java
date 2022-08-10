@@ -34,9 +34,9 @@ public class PeopleController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public HttpStatus delete(@PathVariable String id) {
-        // TODO
-        return HttpStatus.OK;
+    public HttpStatus delete(@PathVariable("id") String externalId) {
+        personDetailsService.delete(externalId);
+        return HttpStatus.NO_CONTENT;
     }
 
     @GetMapping("/{id}")

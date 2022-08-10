@@ -52,6 +52,12 @@ public class PersonDetailsService implements UserDetailsService {
                 });
     }
 
+    @Transactional
+    public void delete(String externalId) {
+        Optional<Person> person = peopleRepo.findByExternalId(externalId);
+        peopleRepo.delete(person.orElseThrow(() -> new PersonNotFoundException(utils.getMessageFromBundle("person.notfound.err"))));
+    }
+
     // readOnly = true methods
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
