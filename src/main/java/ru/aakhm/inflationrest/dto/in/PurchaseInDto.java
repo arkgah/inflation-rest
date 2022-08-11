@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Data
-public class PurchaseInDto {
+public class PurchaseInDTO {
     @Positive(message = "{purchase.price.positive}")
     @NotNull
     private Double price;
