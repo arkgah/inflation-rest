@@ -15,7 +15,9 @@ import ru.aakhm.inflationrest.repo.ProductCategoriesRepo;
 import ru.aakhm.inflationrest.repo.ProductsRepo;
 import ru.aakhm.inflationrest.utils.Utils;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -62,6 +64,13 @@ public class ProductsService {
         return fromProductToProductOutDto(productsRepo.save(product));
     }
 
+    @Transactional
+    public void deleteByExternalId(String externalId) {
+        Product product = findByExternalId(externalId)
+                .orElseThrow(() -> new ProductNotFoundException(utils.getMessageFromBundle("product.notfound.err")));
+        productsRepo.delete(product);
+    }
+
     // =======
     // readOnly = true methods
     public Optional<ProductOutDTO> getByNameAndCategoryName(String name, String categoryName) {
@@ -74,6 +83,16 @@ public class ProductsService {
         if (product.isEmpty())
             return Optional.empty();
         return Optional.of(fromProductToProductOutDto(product.get()));
+    }
+
+    public List<ProductOutDTO> index() {
+        return productsRepo.findAll().stream().map(this::fromProductToProductOutDto).collect(Collectors.toList());
+    }
+
+    public ProductOutDTO getByExternalId(String externalId) {
+        return productsRepo.findByExternalId(externalId)
+                .map(this::fromProductToProductOutDto)
+                .orElseThrow(() -> new ProductNotFoundException(utils.getMessageFromBundle("product.notfound.err")));
     }
 
 
