@@ -19,10 +19,15 @@ public class Purchase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(name = "price")
     @Positive(message = "{purchase.price.positive}")
     private double price;
 
-    @NotNull
+    @Column(name = "unit")
+    @Positive(message = "{purchase.unit.value.err}")
+    private double unit;
+
+    @NotNull(message = "{purchase.date.null.err}")
     private Date purchasedAt;
 
     @Size(max = 200, message = "{purchase.memo.size}")

@@ -14,6 +14,10 @@ public class PurchaseInDTO {
     @NotNull
     private Double price;
 
+    @Positive(message = "{purchase.unit.value.err}")
+    @NotNull
+    private Double unit;
+
     @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date purchasedAt;
@@ -21,9 +25,9 @@ public class PurchaseInDTO {
     @Size(max = 200, message = "{purchase.memo.size}")
     private String memo;
 
-    @NotNull
+    @NotNull(message = "{product.name.empty.err}")
     private String productName;
 
-    @NotNull
+    @NotNull(message = "{store.name.empty.err}")
     private String storeName;
 }
