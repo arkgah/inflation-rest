@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
@@ -21,7 +22,7 @@ public class Purchase {
 
     @Column(name = "price")
     @Positive(message = "{purchase.price.positive}")
-    private double price;
+    private BigDecimal price;
 
     @Column(name = "unit")
     @Positive(message = "{purchase.unit.value.err}")

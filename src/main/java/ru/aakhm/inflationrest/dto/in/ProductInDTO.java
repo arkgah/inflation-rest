@@ -9,6 +9,7 @@ import javax.validation.constraints.Size;
 
 @Data
 public class ProductInDTO {
+    @NotNull(message = "product.name.null.err")
     @NotEmpty(message = "{product.name.empty.err}")
     @Size(min = 2, max = 100, message = "{product.name.size.err}")
     private String name;
