@@ -15,6 +15,7 @@ import ru.aakhm.inflationrest.models.Store;
 import ru.aakhm.inflationrest.models.validation.except.person.PersonNotFoundException;
 import ru.aakhm.inflationrest.models.validation.except.product.ProductNotFoundException;
 import ru.aakhm.inflationrest.models.validation.except.productcategory.ProductCategoryNotFoundException;
+import ru.aakhm.inflationrest.models.validation.except.purchase.PurchaseDeleteNotAllowedException;
 import ru.aakhm.inflationrest.models.validation.except.purchase.PurchaseNotFoundException;
 import ru.aakhm.inflationrest.models.validation.except.purchase.PurchaseUpdateNotAllowedException;
 import ru.aakhm.inflationrest.models.validation.except.store.StoreNotFoundException;
@@ -63,12 +64,7 @@ public class PurchasesService {
         Purchase purchaseOld = purchasesRepo.findByExternalId(externalId)
                 .orElseThrow(() -> new PurchaseNotFoundException(utils.getMessageFromBundle("purchase.notfound.err")));
 
-        Principal principal = SecurityContextHolder.getContext().getAuthentication();
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        boolean hasAdminRole = authentication.getAuthorities().stream()
-                .anyMatch(r -> r.getAuthority().equals(Role.ROLE_ADMIN.name()));
-
-        if (!hasAdminRole && !principal.getName().equals(purchaseOld.getPerson().getLogin())) {
+        if (!userCanModifyPurchase(purchaseOld)) {
             throw new PurchaseUpdateNotAllowedException(utils.getMessageFromBundle("purchase.edit.notallowed.err"));
         }
 
@@ -78,6 +74,18 @@ public class PurchasesService {
         purchaseOld = mapPurchase(purchaseNew);
 
         return fromPurchaseToPurchaseOutDTO(purchasesRepo.save(purchaseOld));
+    }
+
+    @Transactional
+    public void deleteByExternalId(String externalId) {
+        Purchase purchaseOld = purchasesRepo.findByExternalId(externalId)
+                .orElseThrow(() -> new PurchaseNotFoundException(utils.getMessageFromBundle("purchase.notfound.err")));
+
+        if (!userCanModifyPurchase(purchaseOld)) {
+            throw new PurchaseDeleteNotAllowedException(utils.getMessageFromBundle("purchase.delete.notallowed.err"));
+        }
+
+        purchasesRepo.delete(purchaseOld);
     }
 
     // ========
@@ -143,4 +151,13 @@ public class PurchasesService {
         purchase.setExternalId(utils.generateExternalId());
     }
 
+    // Разрешаем модификацию (delete, update) только админами, или если покупка сделана данным пользователем
+    private boolean userCanModifyPurchase(Purchase purchase) {
+        Principal principal = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean hasAdminRole = authentication.getAuthorities().stream()
+                .anyMatch(r -> r.getAuthority().equals(Role.ROLE_ADMIN.name()));
+
+        return hasAdminRole || principal.getName().equals(purchase.getPerson().getLogin());
+    }
 }

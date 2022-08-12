@@ -55,6 +55,12 @@ public class PurchaseController {
         return new ResponseEntity<>(purchasesService.update(externalId, purchaseInDTO), HttpStatus.OK);
     }
 
+    @DeleteMapping("/{id}")
+    public HttpStatus delete(@PathVariable("id") String externalId) {
+        purchasesService.deleteByExternalId(externalId);
+        return HttpStatus.NO_CONTENT;
+    }
+
     @GetMapping
     public ResponseEntity<PurchasesOutDTO> index() {
         PurchasesOutDTO purchasesOutDTO = new PurchasesOutDTO();
