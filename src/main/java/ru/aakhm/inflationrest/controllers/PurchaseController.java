@@ -56,11 +56,17 @@ public class PurchaseController {
     }
 
     @GetMapping
-    ResponseEntity<PurchasesOutDTO> index() {
+    public ResponseEntity<PurchasesOutDTO> index() {
         PurchasesOutDTO purchasesOutDTO = new PurchasesOutDTO();
         purchasesOutDTO.setPurchases(purchasesService.index());
         return new ResponseEntity<>(purchasesOutDTO, HttpStatus.OK);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PurchaseOutDTO> getByExternalId(@PathVariable("id") String externalId) {
+        return new ResponseEntity<>(purchasesService.getByExternalId(externalId), HttpStatus.OK);
+    }
+
 
     @ExceptionHandler
     private ResponseEntity<ErrorDTO> handleException(RuntimeException e) {

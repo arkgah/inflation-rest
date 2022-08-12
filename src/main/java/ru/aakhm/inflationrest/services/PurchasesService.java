@@ -86,6 +86,11 @@ public class PurchasesService {
         return purchasesRepo.findAll().stream().map(this::fromPurchaseToPurchaseOutDTO).collect(Collectors.toList());
     }
 
+    public PurchaseOutDTO getByExternalId(String externalId) {
+        return purchasesRepo.findByExternalId(externalId).map(this::fromPurchaseToPurchaseOutDTO)
+                .orElseThrow(() -> new PurchaseNotFoundException(utils.getMessageFromBundle("purchase.notfound.err")));
+    }
+
     // ========
     // utility methods
     private Purchase fromPurchaseInDTOtoPurchase(PurchaseInDTO purchaseInDTO) {
