@@ -60,6 +60,16 @@ public class PurchasesService {
     }
 
     @Transactional
+    public PurchaseOutDTO saveForPerson(PurchaseInDTO purchaseInDTO, String login) {
+        Purchase purchase = fromPurchaseInDTOtoPurchase(purchaseInDTO);
+        enrichPurchase(purchase);
+        purchase.setPerson(peopleRepo.findByLogin(login)
+                .orElseThrow(() -> new PersonNotFoundException(
+                        utils.getMessageFromBundle("person.notfound.err"))));
+        return fromPurchaseToPurchaseOutDTO(purchasesRepo.save(purchase));
+    }
+
+    @Transactional
     public PurchaseOutDTO update(String externalId, PurchaseInDTO purchaseInDTO) {
         Purchase purchaseOld = purchasesRepo.findByExternalId(externalId)
                 .orElseThrow(() -> new PurchaseNotFoundException(utils.getMessageFromBundle("purchase.notfound.err")));
@@ -129,11 +139,13 @@ public class PurchasesService {
                 () -> new StoreNotFoundException(utils.getMessageFromBundle("store.notfound.err"))));
 
         Principal principal = SecurityContextHolder.getContext().getAuthentication();
-        purchase.setPerson(
-                peopleRepo.findByLogin(principal.getName())
-                        .orElseThrow(() -> new PersonNotFoundException(
-                                utils.getMessageFromBundle("person.notfound.err"))));
-
+        // При инициализации DB principal == null
+        if (principal != null) {
+            purchase.setPerson(
+                    peopleRepo.findByLogin(principal.getName())
+                            .orElseThrow(() -> new PersonNotFoundException(
+                                    utils.getMessageFromBundle("person.notfound.err"))));
+        }
         return purchase;
     }
 

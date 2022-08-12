@@ -6,7 +6,9 @@ import lombok.ToString;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.temporal.TemporalAdjusters;
+import java.util.Date;
 
 public class DateTimeUtil {
     @Getter
@@ -56,5 +58,9 @@ public class DateTimeUtil {
 
     public static LocalDateTime atLastDayOfMonth(LocalDate date) {
         return date.with(TemporalAdjusters.lastDayOfMonth()).atTime(LocalTime.MAX);
+    }
+
+    public static Date dateFromLocalDate(LocalDate localDate) {
+        return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 }

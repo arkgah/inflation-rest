@@ -12,6 +12,7 @@ import ru.aakhm.inflationrest.utils.DateTimeUtil;
 import ru.aakhm.inflationrest.utils.Utils;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.TemporalAdjusters;
@@ -100,14 +101,14 @@ public class AnalyticsService {
                 .values().stream().mapToDouble(Double::doubleValue).sum();
 
         double cpi = 100. * (cartPrice2 - cartPrice1) / cartPrice2;
-
-        return OptionalDouble.of(cpi);
+        // округляем до одной цифры после запятой
+        return OptionalDouble.of(BigDecimal.valueOf(cpi).setScale(1, RoundingMode.HALF_UP).doubleValue());
     }
 
     private Map<LocalDate, Map<Integer, Double>> getMonthlyPurchasesMap(List<Purchase> purchaseList) {
         return purchaseList.stream()
                 .peek(p -> {
-                    BigDecimal normalizedPrice = p.getPrice().multiply(BigDecimal.valueOf(p.getUnit() / p.getProduct().getUnit()));
+                    BigDecimal normalizedPrice = p.getPrice().multiply(BigDecimal.valueOf(p.getProduct().getUnit() / p.getUnit()));
                     p.setPrice(normalizedPrice);
                 })
                 .collect(Collectors.groupingBy(p -> LocalDate.ofInstant(p.getPurchasedAt().toInstant(), ZoneId.systemDefault()).with(TemporalAdjusters.firstDayOfMonth()),
