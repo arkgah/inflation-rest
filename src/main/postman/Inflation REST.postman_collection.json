@@ -1,0 +1,1383 @@
+{
+  "info": {
+    "_postman_id": "eaa72305-c507-42a7-8629-3bf9ffefffa9",
+    "name": "Inflation REST",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Stores",
+      "item": [
+        {
+          "name": "Create Store",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ru-RU",
+                "type": "default"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{Bearer}}",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Проверка\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{server}}:{{port}}/stores",
+              "protocol": "http",
+              "host": [
+                "{{server}}"
+              ],
+              "port": "{{port}}",
+              "path": [
+                "stores"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Store",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ru-RU",
+                "type": "default"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{Bearer}}",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"New Store\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{server}}:{{port}}/stores/fY7WYKPwemeOj6KUMoI72rTkzUBjqb",
+              "protocol": "http",
+              "host": [
+                "{{server}}"
+              ],
+              "port": "{{port}}",
+              "path": [
+                "stores",
+                "fY7WYKPwemeOj6KUMoI72rTkzUBjqb"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get all stores",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ru-RU",
+                "type": "default"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{Bearer}}",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"7\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{server}}:{{port}}/stores",
+              "protocol": "http",
+              "host": [
+                "{{server}}"
+              ],
+              "port": "{{port}}",
+              "path": [
+                "stores"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get store by id",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ru-RU",
+                "type": "default"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{Bearer}}",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"7\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{server}}:{{port}}/stores/ypRjgN6hvew1G4u2w58iLeP1UuLbkv",
+              "protocol": "http",
+              "host": [
+                "{{server}}"
+              ],
+              "port": "{{port}}",
+              "path": [
+                "stores",
+                "ypRjgN6hvew1G4u2w58iLeP1UuLbkv"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get store by name",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ru-RU",
+                "type": "default"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{Bearer}}",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"7\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{server}}:{{port}}/stores/name/7я",
+              "protocol": "http",
+              "host": [
+                "{{server}}"
+              ],
+              "port": "{{port}}",
+              "path": [
+                "stores",
+                "name",
+                "7я"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Store",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ru-RU",
+                "type": "default"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{Bearer}}",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"T\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{server}}:{{port}}/stores/TcQHrqZGbjLVosKp0Dde5Bvb776YA3",
+              "protocol": "http",
+              "host": [
+                "{{server}}"
+              ],
+              "port": "{{port}}",
+              "path": [
+                "stores",
+                "TcQHrqZGbjLVosKp0Dde5Bvb776YA3"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Product Categories",
+      "item": [
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ru-RU",
+                "type": "default"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{Bearer}}",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Продукты\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{server}}:{{port}}/products/categories",
+              "protocol": "http",
+              "host": [
+                "{{server}}"
+              ],
+              "port": "{{port}}",
+              "path": [
+                "products",
+                "categories"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Category",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ru-RU",
+                "type": "default"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{Bearer}}",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Продукты питания\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{server}}:{{port}}/products/categories/Rj4aJXHoraoi7reJqNphBw6nd4cv94",
+              "protocol": "http",
+              "host": [
+                "{{server}}"
+              ],
+              "port": "{{port}}",
+              "path": [
+                "products",
+                "categories",
+                "Rj4aJXHoraoi7reJqNphBw6nd4cv94"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get all categories",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ru-RU",
+                "type": "default"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{Bearer}}",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"7\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{server}}:{{port}}/products/categories",
+              "protocol": "http",
+              "host": [
+                "{{server}}"
+              ],
+              "port": "{{port}}",
+              "path": [
+                "products",
+                "categories"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get category by id",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ru-RU",
+                "type": "default"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{Bearer}}",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"7\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{server}}:{{port}}/products/categories/Rj4aJXHoraoi7reJqNphBw6nd4cv94",
+              "protocol": "http",
+              "host": [
+                "{{server}}"
+              ],
+              "port": "{{port}}",
+              "path": [
+                "products",
+                "categories",
+                "Rj4aJXHoraoi7reJqNphBw6nd4cv94"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get category by name",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ru-RU",
+                "type": "default"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{Bearer}}",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"7\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{server}}:{{port}}/products/categories/name/Продукты питания",
+              "protocol": "http",
+              "host": [
+                "{{server}}"
+              ],
+              "port": "{{port}}",
+              "path": [
+                "products",
+                "categories",
+                "name",
+                "Продукты питания"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Category",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ru-RU",
+                "type": "default"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{Bearer}}",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"T\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{server}}:{{port}}/products/categories/Rj4aJXHoraoi7reJqNphBw6nd4cv94",
+              "protocol": "http",
+              "host": [
+                "{{server}}"
+              ],
+              "port": "{{port}}",
+              "path": [
+                "products",
+                "categories",
+                "Rj4aJXHoraoi7reJqNphBw6nd4cv94"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Create Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ru-RU",
+                "type": "default"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{Bearer}}",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Кефир\",\n    \"unit\": 1,\n    \"category\": {\n        \"name\": \"Продукты\"\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{server}}:{{port}}/products",
+              "protocol": "http",
+              "host": [
+                "{{server}}"
+              ],
+              "port": "{{port}}",
+              "path": [
+                "products"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Product",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ru-RU",
+                "type": "default"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{Bearer}}",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Кефир\",\n    \"unit\": 1,\n    \"category\": {\n        \"name\": \"Продукты\"\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{server}}:{{port}}/products/WZ9i4PBPU9Io54wpaZn5w2O2fwQZqA",
+              "protocol": "http",
+              "host": [
+                "{{server}}"
+              ],
+              "port": "{{port}}",
+              "path": [
+                "products",
+                "WZ9i4PBPU9Io54wpaZn5w2O2fwQZqA"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get all products",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ru-RU",
+                "type": "default"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{Bearer}}",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"7\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{server}}:{{port}}/products",
+              "protocol": "http",
+              "host": [
+                "{{server}}"
+              ],
+              "port": "{{port}}",
+              "path": [
+                "products"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get product by id",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ru-RU",
+                "type": "default"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{Bearer}}",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"7\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{server}}:{{port}}/products/WZ9i4PBPU9Io54wpaZn5w2O2fwQZqA",
+              "protocol": "http",
+              "host": [
+                "{{server}}"
+              ],
+              "port": "{{port}}",
+              "path": [
+                "products",
+                "WZ9i4PBPU9Io54wpaZn5w2O2fwQZqA"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get product by name and category",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ru-RU",
+                "type": "default"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{Bearer}}",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"7\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{server}}:{{port}}/products/name/Кефир/category/Продукты",
+              "protocol": "http",
+              "host": [
+                "{{server}}"
+              ],
+              "port": "{{port}}",
+              "path": [
+                "products",
+                "name",
+                "Кефир",
+                "category",
+                "Продукты"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Product",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ru-RU",
+                "type": "default"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{Bearer}}",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"T\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{server}}:{{port}}/products/WZ9i4PBPU9Io54wpaZn5w2O2fwQZqA",
+              "protocol": "http",
+              "host": [
+                "{{server}}"
+              ],
+              "port": "{{port}}",
+              "path": [
+                "products",
+                "WZ9i4PBPU9Io54wpaZn5w2O2fwQZqA"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Purchases",
+      "item": [
+        {
+          "name": "Create Purchase",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ru-RU",
+                "type": "default"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{Bearer}}",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"purchasedAt\": \"2022-08-12 10:22:14\",    \n    \"price\": 169.4,\n    \"memo\": \"От обычного юзера\",\n    \"product\" : {\n        \"name\": \"Кефир\",\n        \"unit\": 1,\n        \"category\": {\n            \"name\": \"Продукты\"\n        }\n    },\n    \"store\": {\n        \"name\": \"Окей\"\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{server}}:{{port}}/purchases",
+              "protocol": "http",
+              "host": [
+                "{{server}}"
+              ],
+              "port": "{{port}}",
+              "path": [
+                "purchases"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Purchase",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ru-RU",
+                "type": "default"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{Bearer}}",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"purchasedAt\": \"2022-08-12 09:00:00\",    \n    \"price\": 123.0,\n    \"memo\": \"Отредактировано одмином ещё раз\",\n    \"product\" : {\n        \"name\": \"Кефир\",\n        \"unit\": 2,\n        \"category\": {\n            \"name\": \"Продукты\"\n        }\n    },\n    \"store\": {\n        \"name\": \"Окей\"\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{server}}:{{port}}/purchases/aTFp8NX0CWVYPNnsiNwb0kj7rE0SCi",
+              "protocol": "http",
+              "host": [
+                "{{server}}"
+              ],
+              "port": "{{port}}",
+              "path": [
+                "purchases",
+                "aTFp8NX0CWVYPNnsiNwb0kj7rE0SCi"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get all purchases",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ru-RU",
+                "type": "default"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{Bearer}}",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"7\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{server}}:{{port}}/purchases",
+              "protocol": "http",
+              "host": [
+                "{{server}}"
+              ],
+              "port": "{{port}}",
+              "path": [
+                "purchases"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Purchase by id",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ru-RU",
+                "type": "default"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{Bearer}}",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"7\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{server}}:{{port}}/purchases/aTFp8NX0CWVYPNnsiNwb0kj7rE0SCi",
+              "protocol": "http",
+              "host": [
+                "{{server}}"
+              ],
+              "port": "{{port}}",
+              "path": [
+                "purchases",
+                "aTFp8NX0CWVYPNnsiNwb0kj7rE0SCi"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Purchase",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ru-RU",
+                "type": "default"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{Bearer}}",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"T\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{server}}:{{port}}/purchases/0ligIfdaeaat0KcMpoHNIJrOKHzYur",
+              "protocol": "http",
+              "host": [
+                "{{server}}"
+              ],
+              "port": "{{port}}",
+              "path": [
+                "purchases",
+                "0ligIfdaeaat0KcMpoHNIJrOKHzYur"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var headers = pm.response.headers;",
+                  "console.log(headers);",
+                  "",
+                  "pm.environment.set('Bearer', headers.get('Authorization'));",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ru-RU",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"login\": \"Tester3\",\n    \"password\": \"12345678\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{server}}:{{port}}/auth/login",
+              "protocol": "http",
+              "host": [
+                "{{server}}"
+              ],
+              "port": "{{port}}",
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "New user",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ru-RU",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"login\": \"Tester4\",\n    \"password\": \"1aB#cdef\",\n    \"firstName\": \"Test4\",\n    \"lastName\": \"Tester4\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{server}}:{{port}}/auth/registration",
+              "protocol": "http",
+              "host": [
+                "{{server}}"
+              ],
+              "port": "{{port}}",
+              "path": [
+                "auth",
+                "registration"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ru-RU",
+                "type": "default"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{Bearer}}",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"login\": \"Tester2\",\n    \"password\": \"1aB#cdef\",\n    \"firstName\": \"Test2\",\n    \"lastName\": \"Tester2\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{server}}:{{port}}/auth/update/kq0kzv50WZSAAtVPQZziDiRk4eBFrv",
+              "protocol": "http",
+              "host": [
+                "{{server}}"
+              ],
+              "port": "{{port}}",
+              "path": [
+                "auth",
+                "update",
+                "kq0kzv50WZSAAtVPQZziDiRk4eBFrv"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "People",
+      "item": [
+        {
+          "name": "Get people",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ru-RU",
+                "type": "default"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{Bearer}}",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"7\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{server}}:{{port}}/people",
+              "protocol": "http",
+              "host": [
+                "{{server}}"
+              ],
+              "port": "{{port}}",
+              "path": [
+                "people"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Person",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ru-RU",
+                "type": "default"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{Bearer}}",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"7\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{server}}:{{port}}/people/kq0kzv50WZSAAtVPQZziDiRk4eBFrv",
+              "protocol": "http",
+              "host": [
+                "{{server}}"
+              ],
+              "port": "{{port}}",
+              "path": [
+                "people",
+                "kq0kzv50WZSAAtVPQZziDiRk4eBFrv"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Assign role",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ru-RU",
+                "type": "default"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{Bearer}}",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"7\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{server}}:{{port}}/people/VYfwR1dbizLsx4KaUXvjPlC9lu5W5s/role/ROLE_USERS",
+              "protocol": "http",
+              "host": [
+                "{{server}}"
+              ],
+              "port": "{{port}}",
+              "path": [
+                "people",
+                "VYfwR1dbizLsx4KaUXvjPlC9lu5W5s",
+                "role",
+                "ROLE_USERS"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get person by login",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ru-RU",
+                "type": "default"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{Bearer}}",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"7\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{server}}:{{port}}/people/login/Tester2",
+              "protocol": "http",
+              "host": [
+                "{{server}}"
+              ],
+              "port": "{{port}}",
+              "path": [
+                "people",
+                "login",
+                "Tester2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get person by externalId",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ru-RU",
+                "type": "default"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{Bearer}}",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"7\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{server}}:{{port}}/people/VYfwR1dbizLsx4KaUXvjPlC9lu5W5s",
+              "protocol": "http",
+              "host": [
+                "{{server}}"
+              ],
+              "port": "{{port}}",
+              "path": [
+                "people",
+                "VYfwR1dbizLsx4KaUXvjPlC9lu5W5s"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Analytics",
+      "item": [
+        {
+          "name": "Get CPI",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ru-RU",
+                "type": "default"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "default"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{Bearer}}",
+                "type": "default"
+              }
+            ],
+            "url": {
+              "raw": "http://{{server}}:{{port}}/analytics/cpi?beginDate=2022-01-01&endDate=2022-09-01",
+              "protocol": "http",
+              "host": [
+                "{{server}}"
+              ],
+              "port": "{{port}}",
+              "path": [
+                "analytics",
+                "cpi"
+              ],
+              "query": [
+                {
+                  "key": "beginDate",
+                  "value": "2022-01-01"
+                },
+                {
+                  "key": "endDate",
+                  "value": "2022-09-01"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

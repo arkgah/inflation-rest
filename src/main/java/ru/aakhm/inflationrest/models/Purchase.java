@@ -2,6 +2,7 @@ package ru.aakhm.inflationrest.models;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -9,6 +10,7 @@ import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "purchase")
@@ -50,4 +52,16 @@ public class Purchase {
     @NotNull
     private String externalId;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Purchase purchase = (Purchase) o;
+        return Objects.equals(id, purchase.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
