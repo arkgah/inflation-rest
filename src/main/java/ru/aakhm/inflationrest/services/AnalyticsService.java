@@ -11,6 +11,7 @@ import ru.aakhm.inflationrest.repo.PurchasesRepo;
 import ru.aakhm.inflationrest.utils.DateTimeUtil;
 import ru.aakhm.inflationrest.utils.Utils;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.TemporalAdjusters;
@@ -30,6 +31,8 @@ public class AnalyticsService {
         this.utils = utils;
     }
 
+    // ========
+    // readOnly = true methods
     public CPIOutDTO getCPI(Date beginDate, Date endDate) {
         DateTimeUtil.TwoDateTimeEvents events = DateTimeUtil.TwoDateTimeEvents.of(
                 LocalDate.ofInstant(beginDate.toInstant(), ZoneId.systemDefault()),
@@ -55,22 +58,19 @@ public class AnalyticsService {
         return res;
     }
 
-    private static OptionalDouble getCpi(List<Purchase> purchaseList1, List<Purchase> purchaseList2, boolean isExactCarts) {
-        Map<LocalDate, Map<Integer, Double>> byMonthMap1 = purchaseList1.stream()
-                .collect(Collectors.groupingBy(p -> LocalDate.ofInstant(p.getPurchasedAt().toInstant(), ZoneId.systemDefault()).with(TemporalAdjusters.firstDayOfMonth()),
-                        Collectors.groupingBy(p -> p.getProduct().getId(), Collectors.averagingDouble(p -> p.getPrice().doubleValue()))));
-
-        Map<LocalDate, Map<Integer, Double>> byMonthMap2 = purchaseList2.stream()
-                .collect(Collectors.groupingBy(p -> LocalDate.ofInstant(p.getPurchasedAt().toInstant(), ZoneId.systemDefault()).with(TemporalAdjusters.firstDayOfMonth()),
-                        Collectors.groupingBy(p -> p.getProduct().getId(), Collectors.averagingDouble(p -> p.getPrice().doubleValue()))));
+    // ========
+    // utility methods
+    private OptionalDouble getCpi(List<Purchase> purchaseList1, List<Purchase> purchaseList2, boolean isExactCarts) {
+        Map<LocalDate, Map<Integer, Double>> byMonthMap1 = getMonthlyPurchasesMap(purchaseList1);
+        Map<LocalDate, Map<Integer, Double>> byMonthMap2 = getMonthlyPurchasesMap(purchaseList2);
 
         Set<Integer> products1 = byMonthMap1.values().stream().map(Map::keySet).flatMap(Set::stream).collect(Collectors.toSet());
         Set<Integer> products2 = byMonthMap2.values().stream().map(Map::keySet).flatMap(Set::stream).collect(Collectors.toSet());
         Set<Integer> productsIntersect = products1.stream().filter(products2::contains).collect(Collectors.toSet());
 
-        log.debug("products1={}", products1.toString());
-        log.debug("products2={}", products2.toString());
-        log.debug("productsIntersect={}", productsIntersect.toString());
+        log.debug("products1={}", products1);
+        log.debug("products2={}", products2);
+        log.debug("productsIntersect={}", productsIntersect);
 
         OptionalInt countProductsCart1 = byMonthMap1.values().stream().mapToInt(m -> m.keySet().size()).findFirst();
         OptionalInt countProductsCart2 = byMonthMap2.values().stream().mapToInt(m -> m.keySet().size()).findFirst();
@@ -84,14 +84,33 @@ public class AnalyticsService {
                 return OptionalDouble.empty();
         }
 
-        byMonthMap1.values().stream().findFirst().get().keySet().retainAll(productsIntersect);
-        byMonthMap2.values().stream().findFirst().get().keySet().retainAll(productsIntersect);
+        byMonthMap1.values().stream().findFirst()
+                .orElseThrow(() -> new CPICannotCalculateException(utils.getMessageFromBundle("cpi.cannotcalculate.err")))
+                .keySet().retainAll(productsIntersect);
+        byMonthMap2.values().stream().findFirst()
+                .orElseThrow(() -> new CPICannotCalculateException(utils.getMessageFromBundle("cpi.cannotcalculate.err")))
+                .keySet().retainAll(productsIntersect);
 
 
-        double cartPrice1 = byMonthMap1.values().stream().findFirst().get().values().stream().mapToDouble(Double::doubleValue).sum();
-        double cartPrice2 = byMonthMap2.values().stream().findFirst().get().values().stream().mapToDouble(Double::doubleValue).sum();
+        double cartPrice1 = byMonthMap1.values().stream().findFirst()
+                .orElseThrow(() -> new CPICannotCalculateException(utils.getMessageFromBundle("cpi.cannotcalculate.err")))
+                .values().stream().mapToDouble(Double::doubleValue).sum();
+        double cartPrice2 = byMonthMap2.values().stream().findFirst()
+                .orElseThrow(() -> new CPICannotCalculateException(utils.getMessageFromBundle("cpi.cannotcalculate.err")))
+                .values().stream().mapToDouble(Double::doubleValue).sum();
+
         double cpi = 100. * (cartPrice2 - cartPrice1) / cartPrice2;
 
         return OptionalDouble.of(cpi);
+    }
+
+    private Map<LocalDate, Map<Integer, Double>> getMonthlyPurchasesMap(List<Purchase> purchaseList) {
+        return purchaseList.stream()
+                .peek(p -> {
+                    BigDecimal normalizedPrice = p.getPrice().multiply(BigDecimal.valueOf(p.getUnit() / p.getProduct().getUnit()));
+                    p.setPrice(normalizedPrice);
+                })
+                .collect(Collectors.groupingBy(p -> LocalDate.ofInstant(p.getPurchasedAt().toInstant(), ZoneId.systemDefault()).with(TemporalAdjusters.firstDayOfMonth()),
+                        Collectors.groupingBy(p -> p.getProduct().getId(), Collectors.averagingDouble(p -> p.getPrice().doubleValue()))));
     }
 }
