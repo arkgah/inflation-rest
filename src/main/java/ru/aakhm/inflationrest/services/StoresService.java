@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
-public class StoresService {
+public class StoresService implements ExternalIdAndNameService<StoreInDTO, StoreOutDTO> {
     private final StoresRepo storesRepo;
     private final Utils utils;
     private final ModelMapper modelMapper;
@@ -32,6 +32,7 @@ public class StoresService {
 
     // ========
     // readOnly = false methods
+    @Override
     @Transactional
     public StoreOutDTO save(StoreInDTO storeInDTO) {
         Store store = fromStoreInDtoToStore(storeInDTO);
@@ -40,6 +41,7 @@ public class StoresService {
         return fromStoreToStoreOutDTO(savedStore);
     }
 
+    @Override
     @Transactional
     public void deleteByExternalId(String externalId) {
         Store store = findByExternalId(externalId)
@@ -49,6 +51,7 @@ public class StoresService {
         storesRepo.deleteById(store.getId());
     }
 
+    @Override
     @Transactional
     public StoreOutDTO update(String externalId, StoreInDTO updatedStore) {
         Store storeEntity = findByExternalId(externalId)
@@ -61,14 +64,17 @@ public class StoresService {
 
     // ========
     // readOnly = true methods
+    @Override
     public List<StoreOutDTO> index() {
         return storesRepo.findAll().stream().map(this::fromStoreToStoreOutDTO).collect(Collectors.toList());
     }
 
+    @Override
     public Optional<StoreOutDTO> getByName(String name) {
         return storesRepo.findByName(name).map(this::fromStoreToStoreOutDTO);
     }
 
+    @Override
     public StoreOutDTO getByExternalId(String externalId) {
         return storesRepo.findByExternalId(externalId)
                 .map(this::fromStoreToStoreOutDTO)

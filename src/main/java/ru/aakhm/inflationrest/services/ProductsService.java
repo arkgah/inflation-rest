@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
-public class ProductsService {
+public class ProductsService implements ExternalIdAndNameWithCategoryService<ProductInDTO, ProductOutDTO> {
     private final ProductsRepo productsRepo;
     private final ProductCategoriesRepo productCategoriesRepo;
     private final Utils utils;
@@ -37,6 +37,7 @@ public class ProductsService {
 
     // ========
     // readOnly = false methods
+    @Override
     @Transactional
     public ProductOutDTO save(ProductInDTO productInDTO) {
         Product product = fromProductInDtoToProduct(productInDTO);
@@ -44,6 +45,7 @@ public class ProductsService {
         return fromProductToProductOutDto(productsRepo.save(product));
     }
 
+    @Override
     @Transactional
     public ProductOutDTO update(String externalId, ProductInDTO productInDTO) {
         Product product = findByExternalId(externalId)
@@ -64,6 +66,7 @@ public class ProductsService {
         return fromProductToProductOutDto(productsRepo.save(product));
     }
 
+    @Override
     @Transactional
     public void deleteByExternalId(String externalId) {
         Product product = findByExternalId(externalId)
@@ -73,6 +76,7 @@ public class ProductsService {
 
     // =======
     // readOnly = true methods
+    @Override
     public Optional<ProductOutDTO> getByNameAndCategoryName(String name, String categoryName) {
         Optional<ProductCategory> productCategory = productCategoriesRepo.findByName(categoryName);
         Optional<Product> product = productsRepo.getProductByNameAndCategory(
@@ -85,17 +89,19 @@ public class ProductsService {
         return Optional.of(fromProductToProductOutDto(product.get()));
     }
 
+    @Override
     public List<ProductOutDTO> index() {
         return productsRepo.findAll().stream().map(this::fromProductToProductOutDto).collect(Collectors.toList());
     }
 
+    @Override
     public ProductOutDTO getByExternalId(String externalId) {
         return productsRepo.findByExternalId(externalId)
                 .map(this::fromProductToProductOutDto)
                 .orElseThrow(() -> new ProductNotFoundException(utils.getMessageFromBundle("product.notfound.err")));
     }
 
-
+    // aux methods
     private Product fromProductInDtoToProduct(ProductInDTO productInDTO) {
         Optional<ProductCategory> productCategory = productCategoriesRepo.findByName(productInDTO.getCategory().getName());
         Product product = modelMapper.map(productInDTO, Product.class);

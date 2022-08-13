@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
-public class ProductCategoriesService {
+public class ProductCategoriesService implements ExternalIdAndNameService<ProductCategoryInDTO, ProductCategoryOutDTO> {
     private final ProductCategoriesRepo productCategoriesRepo;
     private final Utils utils;
     private final ModelMapper modelMapper;
@@ -29,6 +29,7 @@ public class ProductCategoriesService {
         this.modelMapper = modelMapper;
     }
 
+    @Override
     @Transactional
     public ProductCategoryOutDTO save(ProductCategoryInDTO productCategoryInDTO) {
         ProductCategory productCategory = fromProductCategoryInDtoToProductCategory(productCategoryInDTO);
@@ -37,6 +38,7 @@ public class ProductCategoriesService {
         return fromProductCategoryToProductCategoryOutDto(savedProductCategory);
     }
 
+    @Override
     @Transactional
     public void deleteByExternalId(String externalId) {
         ProductCategory productCategory = findByExternalId(externalId)
@@ -46,6 +48,7 @@ public class ProductCategoriesService {
         productCategoriesRepo.deleteById(productCategory.getId());
     }
 
+    @Override
     @Transactional
     public ProductCategoryOutDTO update(String externalId, ProductCategoryInDTO updatedProductCategory) {
         ProductCategory productCategoryEntity = findByExternalId(externalId)
@@ -58,14 +61,17 @@ public class ProductCategoriesService {
 
     // ========
     // readOnly = true methods
+    @Override
     public List<ProductCategoryOutDTO> index() {
         return productCategoriesRepo.findAll().stream().map(this::fromProductCategoryToProductCategoryOutDto).collect(Collectors.toList());
     }
 
+    @Override
     public Optional<ProductCategoryOutDTO> getByName(String name) {
         return productCategoriesRepo.findByName(name).map(this::fromProductCategoryToProductCategoryOutDto);
     }
 
+    @Override
     public ProductCategoryOutDTO getByExternalId(String externalId) {
         return productCategoriesRepo.findByExternalId(externalId)
                 .map(this::fromProductCategoryToProductCategoryOutDto)

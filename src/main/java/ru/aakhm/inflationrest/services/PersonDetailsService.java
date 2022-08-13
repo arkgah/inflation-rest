@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.aakhm.inflationrest.dto.in.PersonInDTO;
 import ru.aakhm.inflationrest.dto.out.PersonOutDTO;
 import ru.aakhm.inflationrest.models.Person;
 import ru.aakhm.inflationrest.models.PersonRole;
@@ -80,16 +79,8 @@ public class PersonDetailsService implements UserDetailsService {
         return peopleRepo.findAll().stream().map(this::fromPersonToPersonOutDto).collect(Collectors.toList());
     }
 
-    private Person fromPersonInDtoToPerson(PersonInDTO personInDTO) {
-        return modelMapper.map(personInDTO, Person.class);
-    }
-
     private PersonOutDTO fromPersonToPersonOutDto(Person person) {
         return modelMapper.map(person, PersonOutDTO.class);
-    }
-
-    private void enrichPerson(Person person) {
-        person.setExternalId(utils.generateExternalId());
     }
 
 }

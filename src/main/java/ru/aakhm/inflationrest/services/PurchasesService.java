@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
-public class PurchasesService {
+public class PurchasesService implements ExternalIdService<PurchaseInDTO, PurchaseOutDTO> {
     private final PurchasesRepo purchasesRepo;
     private final ProductsRepo productsRepo;
     private final ProductCategoriesRepo productCategoriesRepo;
@@ -52,6 +52,7 @@ public class PurchasesService {
 
     // ========
     // readOnly = false methods
+    @Override
     @Transactional
     public PurchaseOutDTO save(PurchaseInDTO purchaseInDTO) {
         Purchase purchase = fromPurchaseInDTOtoPurchase(purchaseInDTO);
@@ -59,6 +60,7 @@ public class PurchasesService {
         return fromPurchaseToPurchaseOutDTO(purchasesRepo.save(purchase));
     }
 
+    // Вспомогательный метод, необходим для внутреннего создания Purchase
     @Transactional
     public PurchaseOutDTO saveForPerson(PurchaseInDTO purchaseInDTO, String login) {
         Purchase purchase = fromPurchaseInDTOtoPurchase(purchaseInDTO);
@@ -69,6 +71,7 @@ public class PurchasesService {
         return fromPurchaseToPurchaseOutDTO(purchasesRepo.save(purchase));
     }
 
+    @Override
     @Transactional
     public PurchaseOutDTO update(String externalId, PurchaseInDTO purchaseInDTO) {
         Purchase purchaseOld = purchasesRepo.findByExternalId(externalId)
@@ -86,6 +89,7 @@ public class PurchasesService {
         return fromPurchaseToPurchaseOutDTO(purchasesRepo.save(purchaseOld));
     }
 
+    @Override
     @Transactional
     public void deleteByExternalId(String externalId) {
         Purchase purchaseOld = purchasesRepo.findByExternalId(externalId)
@@ -100,10 +104,12 @@ public class PurchasesService {
 
     // ========
     // readOnly = true methods
+    @Override
     public List<PurchaseOutDTO> index() {
         return purchasesRepo.findAll().stream().map(this::fromPurchaseToPurchaseOutDTO).collect(Collectors.toList());
     }
 
+    @Override
     public PurchaseOutDTO getByExternalId(String externalId) {
         return purchasesRepo.findByExternalId(externalId).map(this::fromPurchaseToPurchaseOutDTO)
                 .orElseThrow(() -> new PurchaseNotFoundException(utils.getMessageFromBundle("purchase.notfound.err")));
