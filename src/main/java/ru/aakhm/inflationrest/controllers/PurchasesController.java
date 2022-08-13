@@ -19,13 +19,13 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/purchases")
-public class PurchaseController {
+public class PurchasesController {
     private final PurchasesService purchasesService;
     private final PurchaseInDTOValidator purchaseInDTOValidator;
     private final Utils utils;
 
     @Autowired
-    public PurchaseController(PurchasesService purchasesService, PurchaseInDTOValidator purchaseInDTOValidator, Utils utils) {
+    public PurchasesController(PurchasesService purchasesService, PurchaseInDTOValidator purchaseInDTOValidator, Utils utils) {
         this.purchasesService = purchasesService;
         this.purchaseInDTOValidator = purchaseInDTOValidator;
         this.utils = utils;
@@ -62,9 +62,11 @@ public class PurchaseController {
     }
 
     @GetMapping
-    public ResponseEntity<PurchasesOutDTO> index() {
+    public ResponseEntity<PurchasesOutDTO> index(
+            @RequestParam(name = "page", required = false) Integer page,
+            @RequestParam(name = "per_page", required = false, defaultValue = "${purchases.per_page}") Integer perPage) {
         PurchasesOutDTO purchasesOutDTO = new PurchasesOutDTO();
-        purchasesOutDTO.setPurchases(purchasesService.index());
+        purchasesOutDTO.setPurchases(purchasesService.index(page, perPage));
         return new ResponseEntity<>(purchasesOutDTO, HttpStatus.OK);
     }
 

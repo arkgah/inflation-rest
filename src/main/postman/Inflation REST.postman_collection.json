@@ -26,7 +26,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"Проверка\"\n}",
+              "raw": "{\n    \"name\": \"Новый магазин\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -65,7 +65,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"New Store\"\n}",
+              "raw": "{\n    \"name\": \"5ka\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -73,7 +73,7 @@
               }
             },
             "url": {
-              "raw": "http://{{server}}:{{port}}/stores/fY7WYKPwemeOj6KUMoI72rTkzUBjqb",
+              "raw": "http://{{server}}:{{port}}/stores/s1",
               "protocol": "http",
               "host": [
                 "{{server}}"
@@ -81,7 +81,7 @@
               "port": "{{port}}",
               "path": [
                 "stores",
-                "fY7WYKPwemeOj6KUMoI72rTkzUBjqb"
+                "s1"
               ]
             }
           },
@@ -116,7 +116,7 @@
               }
             },
             "url": {
-              "raw": "http://{{server}}:{{port}}/stores",
+              "raw": "http://{{server}}:{{port}}/stores?page=0&per_page=5",
               "protocol": "http",
               "host": [
                 "{{server}}"
@@ -124,6 +124,16 @@
               "port": "{{port}}",
               "path": [
                 "stores"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "per_page",
+                  "value": "5"
+                }
               ]
             }
           },
@@ -158,7 +168,7 @@
               }
             },
             "url": {
-              "raw": "http://{{server}}:{{port}}/stores/ypRjgN6hvew1G4u2w58iLeP1UuLbkv",
+              "raw": "http://{{server}}:{{port}}/stores/s1",
               "protocol": "http",
               "host": [
                 "{{server}}"
@@ -166,7 +176,7 @@
               "port": "{{port}}",
               "path": [
                 "stores",
-                "ypRjgN6hvew1G4u2w58iLeP1UuLbkv"
+                "s1"
               ]
             }
           },
@@ -201,7 +211,7 @@
               }
             },
             "url": {
-              "raw": "http://{{server}}:{{port}}/stores/name/7я",
+              "raw": "http://{{server}}:{{port}}/stores/name/Окей",
               "protocol": "http",
               "host": [
                 "{{server}}"
@@ -210,7 +220,7 @@
               "path": [
                 "stores",
                 "name",
-                "7я"
+                "Окей"
               ]
             }
           },
@@ -242,7 +252,7 @@
               }
             },
             "url": {
-              "raw": "http://{{server}}:{{port}}/stores/TcQHrqZGbjLVosKp0Dde5Bvb776YA3",
+              "raw": "http://{{server}}:{{port}}/stores/s1",
               "protocol": "http",
               "host": [
                 "{{server}}"
@@ -250,7 +260,7 @@
               "port": "{{port}}",
               "path": [
                 "stores",
-                "TcQHrqZGbjLVosKp0Dde5Bvb776YA3"
+                "s1"
               ]
             }
           },
@@ -279,7 +289,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"Продукты\"\n}",
+              "raw": "{\n    \"name\": \"Гаджеты\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -327,7 +337,7 @@
               }
             },
             "url": {
-              "raw": "http://{{server}}:{{port}}/products/categories/Rj4aJXHoraoi7reJqNphBw6nd4cv94",
+              "raw": "http://{{server}}:{{port}}/products/categories/pc1",
               "protocol": "http",
               "host": [
                 "{{server}}"
@@ -336,7 +346,7 @@
               "path": [
                 "products",
                 "categories",
-                "Rj4aJXHoraoi7reJqNphBw6nd4cv94"
+                "pc1"
               ]
             }
           },
@@ -414,7 +424,7 @@
               }
             },
             "url": {
-              "raw": "http://{{server}}:{{port}}/products/categories/Rj4aJXHoraoi7reJqNphBw6nd4cv94",
+              "raw": "http://{{server}}:{{port}}/products/categories/pc2",
               "protocol": "http",
               "host": [
                 "{{server}}"
@@ -423,7 +433,7 @@
               "path": [
                 "products",
                 "categories",
-                "Rj4aJXHoraoi7reJqNphBw6nd4cv94"
+                "pc2"
               ]
             }
           },
@@ -458,7 +468,7 @@
               }
             },
             "url": {
-              "raw": "http://{{server}}:{{port}}/products/categories/name/Продукты питания",
+              "raw": "http://{{server}}:{{port}}/products/categories/name/Хозтовары",
               "protocol": "http",
               "host": [
                 "{{server}}"
@@ -468,7 +478,7 @@
                 "products",
                 "categories",
                 "name",
-                "Продукты питания"
+                "Хозтовары"
               ]
             }
           },
@@ -500,7 +510,7 @@
               }
             },
             "url": {
-              "raw": "http://{{server}}:{{port}}/products/categories/Rj4aJXHoraoi7reJqNphBw6nd4cv94",
+              "raw": "http://{{server}}:{{port}}/products/categories/pc2",
               "protocol": "http",
               "host": [
                 "{{server}}"
@@ -509,7 +519,7 @@
               "path": [
                 "products",
                 "categories",
-                "Rj4aJXHoraoi7reJqNphBw6nd4cv94"
+                "pc2"
               ]
             }
           },
@@ -538,7 +548,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"Кефир\",\n    \"unit\": 1,\n    \"category\": {\n        \"name\": \"Продукты\"\n    }\n}",
+              "raw": "{\n    \"name\": \"Сыр твёрдый Вкусный\",\n    \"unit\": 1,\n    \"category\": {\n        \"name\": \"Продукты\"\n    }\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -577,7 +587,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"Кефир\",\n    \"unit\": 1,\n    \"category\": {\n        \"name\": \"Продукты\"\n    }\n}",
+              "raw": "{\n    \"name\": \"Хлеб зерновой\",\n    \"unit\": 0.5,\n    \"category\": {\n        \"name\": \"Продукты\"\n    }\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -585,7 +595,7 @@
               }
             },
             "url": {
-              "raw": "http://{{server}}:{{port}}/products/WZ9i4PBPU9Io54wpaZn5w2O2fwQZqA",
+              "raw": "http://{{server}}:{{port}}/products/p1",
               "protocol": "http",
               "host": [
                 "{{server}}"
@@ -593,7 +603,7 @@
               "port": "{{port}}",
               "path": [
                 "products",
-                "WZ9i4PBPU9Io54wpaZn5w2O2fwQZqA"
+                "p1"
               ]
             }
           },
@@ -620,7 +630,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"7\"\n}",
+              "raw": "",
               "options": {
                 "raw": {
                   "language": "json"
@@ -628,7 +638,7 @@
               }
             },
             "url": {
-              "raw": "http://{{server}}:{{port}}/products",
+              "raw": "http://{{server}}:{{port}}/products?page=0&per_page=10",
               "protocol": "http",
               "host": [
                 "{{server}}"
@@ -636,6 +646,16 @@
               "port": "{{port}}",
               "path": [
                 "products"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "per_page",
+                  "value": "10"
+                }
               ]
             }
           },
@@ -662,7 +682,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"7\"\n}",
+              "raw": "",
               "options": {
                 "raw": {
                   "language": "json"
@@ -670,7 +690,7 @@
               }
             },
             "url": {
-              "raw": "http://{{server}}:{{port}}/products/WZ9i4PBPU9Io54wpaZn5w2O2fwQZqA",
+              "raw": "http://{{server}}:{{port}}/products/p2",
               "protocol": "http",
               "host": [
                 "{{server}}"
@@ -678,7 +698,7 @@
               "port": "{{port}}",
               "path": [
                 "products",
-                "WZ9i4PBPU9Io54wpaZn5w2O2fwQZqA"
+                "p2"
               ]
             }
           },
@@ -756,7 +776,7 @@
               }
             },
             "url": {
-              "raw": "http://{{server}}:{{port}}/products/WZ9i4PBPU9Io54wpaZn5w2O2fwQZqA",
+              "raw": "http://{{server}}:{{port}}/products/p2",
               "protocol": "http",
               "host": [
                 "{{server}}"
@@ -764,7 +784,7 @@
               "port": "{{port}}",
               "path": [
                 "products",
-                "WZ9i4PBPU9Io54wpaZn5w2O2fwQZqA"
+                "p2"
               ]
             }
           },
@@ -793,7 +813,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"purchasedAt\": \"2022-08-12 10:22:14\",    \n    \"price\": 169.4,\n    \"memo\": \"От обычного юзера\",\n    \"product\" : {\n        \"name\": \"Кефир\",\n        \"unit\": 1,\n        \"category\": {\n            \"name\": \"Продукты\"\n        }\n    },\n    \"store\": {\n        \"name\": \"Окей\"\n    }\n}",
+              "raw": "{\n    \"purchasedAt\": \"2022-03-25 18:56:49\",    \n    \"price\": 78,\n    \"memo\": \"По скидке\",\n    \"product\" : {\n        \"name\": \"Кефир\",\n        \"unit\": 0.5,\n        \"category\": {\n            \"name\": \"Продукты\"\n        }\n    },\n    \"store\": {\n        \"name\": \"Лента\"\n    }\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -832,7 +852,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"purchasedAt\": \"2022-08-12 09:00:00\",    \n    \"price\": 123.0,\n    \"memo\": \"Отредактировано одмином ещё раз\",\n    \"product\" : {\n        \"name\": \"Кефир\",\n        \"unit\": 2,\n        \"category\": {\n            \"name\": \"Продукты\"\n        }\n    },\n    \"store\": {\n        \"name\": \"Окей\"\n    }\n}",
+              "raw": "{\n    \"purchasedAt\": \"2022-08-12 09:00:00\",    \n    \"price\": 123.0,\n    \"memo\": \"Отредактировано админом\",\n    \"product\" : {\n        \"name\": \"Кефир\",\n        \"unit\": 2,\n        \"category\": {\n            \"name\": \"Продукты\"\n        }\n    },\n    \"store\": {\n        \"name\": \"Окей\"\n    }\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -883,7 +903,7 @@
               }
             },
             "url": {
-              "raw": "http://{{server}}:{{port}}/purchases",
+              "raw": "http://{{server}}:{{port}}/purchases?page=0&per_page=20",
               "protocol": "http",
               "host": [
                 "{{server}}"
@@ -891,6 +911,16 @@
               "port": "{{port}}",
               "path": [
                 "purchases"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "per_page",
+                  "value": "20"
+                }
               ]
             }
           },
@@ -917,7 +947,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"7\"\n}",
+              "raw": "",
               "options": {
                 "raw": {
                   "language": "json"
@@ -957,7 +987,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"T\"\n}",
+              "raw": "",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1012,7 +1042,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"login\": \"Tester3\",\n    \"password\": \"12345678\"\n}",
+              "raw": "{\n    \"login\": \"admin\",\n    \"password\": \"12345678\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1047,7 +1077,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"login\": \"Tester4\",\n    \"password\": \"1aB#cdef\",\n    \"firstName\": \"Test4\",\n    \"lastName\": \"Tester4\"\n}",
+              "raw": "{\n    \"login\": \"Tester\",\n    \"password\": \"1aB#cdef\",\n    \"firstName\": \"Tester\",\n    \"lastName\": \"Tester\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1087,7 +1117,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"login\": \"Tester2\",\n    \"password\": \"1aB#cdef\",\n    \"firstName\": \"Test2\",\n    \"lastName\": \"Tester2\"\n}",
+              "raw": "{\n    \"login\": \"user\",\n    \"password\": \"1aB#cdef\",\n    \"firstName\": \"User\",\n    \"lastName\": \"User\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1136,7 +1166,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"7\"\n}",
+              "raw": "",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1175,7 +1205,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"7\"\n}",
+              "raw": "",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1215,7 +1245,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"7\"\n}",
+              "raw": "",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1223,7 +1253,7 @@
               }
             },
             "url": {
-              "raw": "http://{{server}}:{{port}}/people/VYfwR1dbizLsx4KaUXvjPlC9lu5W5s/role/ROLE_USERS",
+              "raw": "http://{{server}}:{{port}}/people/eGqDzTGur7hJL7B7Smtc3dYM9K0bbY/role/ROLE_USER",
               "protocol": "http",
               "host": [
                 "{{server}}"
@@ -1231,9 +1261,9 @@
               "port": "{{port}}",
               "path": [
                 "people",
-                "VYfwR1dbizLsx4KaUXvjPlC9lu5W5s",
+                "eGqDzTGur7hJL7B7Smtc3dYM9K0bbY",
                 "role",
-                "ROLE_USERS"
+                "ROLE_USER"
               ]
             }
           },
@@ -1268,7 +1298,7 @@
               }
             },
             "url": {
-              "raw": "http://{{server}}:{{port}}/people/login/Tester2",
+              "raw": "http://{{server}}:{{port}}/people/login/user",
               "protocol": "http",
               "host": [
                 "{{server}}"
@@ -1277,7 +1307,7 @@
               "path": [
                 "people",
                 "login",
-                "Tester2"
+                "user"
               ]
             }
           },
@@ -1312,7 +1342,7 @@
               }
             },
             "url": {
-              "raw": "http://{{server}}:{{port}}/people/VYfwR1dbizLsx4KaUXvjPlC9lu5W5s",
+              "raw": "http://{{server}}:{{port}}/people/eGqDzTGur7hJL7B7Smtc3dYM9K0bbY",
               "protocol": "http",
               "host": [
                 "{{server}}"
@@ -1320,7 +1350,7 @@
               "port": "{{port}}",
               "path": [
                 "people",
-                "VYfwR1dbizLsx4KaUXvjPlC9lu5W5s"
+                "eGqDzTGur7hJL7B7Smtc3dYM9K0bbY"
               ]
             }
           },
@@ -1353,7 +1383,7 @@
               }
             ],
             "url": {
-              "raw": "http://{{server}}:{{port}}/analytics/cpi?beginDate=2022-01-01&endDate=2022-09-01",
+              "raw": "http://{{server}}:{{port}}/analytics/cpi?beginDate=2022-01-01&endDate=2022-03-01",
               "protocol": "http",
               "host": [
                 "{{server}}"
@@ -1370,7 +1400,7 @@
                 },
                 {
                   "key": "endDate",
-                  "value": "2022-09-01"
+                  "value": "2022-03-01"
                 }
               ]
             }

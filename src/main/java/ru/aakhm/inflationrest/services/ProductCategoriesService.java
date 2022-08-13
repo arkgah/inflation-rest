@@ -2,6 +2,8 @@ package ru.aakhm.inflationrest.services;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.aakhm.inflationrest.dto.in.ProductCategoryInDTO;
@@ -62,8 +64,9 @@ public class ProductCategoriesService implements ExternalIdAndNameService<Produc
     // ========
     // readOnly = true methods
     @Override
-    public List<ProductCategoryOutDTO> index() {
-        return productCategoriesRepo.findAll().stream().map(this::fromProductCategoryToProductCategoryOutDto).collect(Collectors.toList());
+    public List<ProductCategoryOutDTO> index(Integer page, Integer perPage) {
+        return productCategoriesRepo.findAll(PageRequest.of(page != null ? page : 0, perPage, Sort.by("name"))).getContent()
+                .stream().map(this::fromProductCategoryToProductCategoryOutDto).collect(Collectors.toList());
     }
 
     @Override

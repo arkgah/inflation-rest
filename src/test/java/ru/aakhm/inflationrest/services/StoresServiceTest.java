@@ -146,7 +146,7 @@ class StoresServiceTest {
         when(storesRepo.findAll()).thenReturn(repoIndex());
         when(modelMapper.map(any(Store.class), any())).thenReturn(new StoreOutDTO());
 
-        List<StoreOutDTO> resList = storesService.index();
+        List<StoreOutDTO> resList = storesService.index(0, 10);
         assertNotNull(resList);
         assertEquals(repoIndex().size(), resList.size());
         verify(storesRepo, times(1)).findAll();

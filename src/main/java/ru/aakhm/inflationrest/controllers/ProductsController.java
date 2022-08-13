@@ -34,9 +34,11 @@ public class ProductsController {
     }
 
     @GetMapping
-    public ResponseEntity<ProductsOutDTO> index() {
+    public ResponseEntity<ProductsOutDTO> index(
+            @RequestParam(name = "page", required = false) Integer page,
+            @RequestParam(name = "per_page", required = false, defaultValue = "${products.per_page}") Integer perPage) {
         ProductsOutDTO res = new ProductsOutDTO();
-        res.setProducts(productsService.index());
+        res.setProducts(productsService.index(page, perPage));
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 

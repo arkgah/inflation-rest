@@ -15,7 +15,7 @@ public interface ExternalIdService<InDTO, OutDTO> {
     // ========
     // readOnly = true methods
     // Реализацию следующих методов не нужно помечать @Transactional
-    List<OutDTO> index();
+    List<OutDTO> index(Integer page, Integer itemsPerPage);
 
     OutDTO getByExternalId(String externalId);
 }

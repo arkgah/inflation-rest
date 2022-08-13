@@ -2,6 +2,8 @@ package ru.aakhm.inflationrest.services;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -105,8 +107,9 @@ public class PurchasesService implements ExternalIdService<PurchaseInDTO, Purcha
     // ========
     // readOnly = true methods
     @Override
-    public List<PurchaseOutDTO> index() {
-        return purchasesRepo.findAll().stream().map(this::fromPurchaseToPurchaseOutDTO).collect(Collectors.toList());
+    public List<PurchaseOutDTO> index(Integer page, Integer perPage) {
+        return purchasesRepo.findAll(PageRequest.of(page != null ? page : 0, perPage, Sort.by("purchasedAt"))).getContent()
+                .stream().map(this::fromPurchaseToPurchaseOutDTO).collect(Collectors.toList());
     }
 
     @Override

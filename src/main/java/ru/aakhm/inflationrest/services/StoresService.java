@@ -2,6 +2,8 @@ package ru.aakhm.inflationrest.services;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.aakhm.inflationrest.dto.in.StoreInDTO;
@@ -65,8 +67,9 @@ public class StoresService implements ExternalIdAndNameService<StoreInDTO, Store
     // ========
     // readOnly = true methods
     @Override
-    public List<StoreOutDTO> index() {
-        return storesRepo.findAll().stream().map(this::fromStoreToStoreOutDTO).collect(Collectors.toList());
+    public List<StoreOutDTO> index(Integer page, Integer perPage) {
+        return storesRepo.findAll(PageRequest.of(page != null ? page : 0, perPage, Sort.by("name"))).getContent()
+                .stream().map(this::fromStoreToStoreOutDTO).collect(Collectors.toList());
     }
 
     @Override
