@@ -10,6 +10,7 @@ A spring boot REST web service for calculating CPI
 * PostgreSQL
 * Security
 * JWT
+* i18n
 * Test
 
 Для работы с сервисом прилагаются коллекция запросов и переменные окружения для Postman
