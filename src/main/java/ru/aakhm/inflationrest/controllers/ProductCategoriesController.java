@@ -69,7 +69,7 @@ public class ProductCategoriesController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<HttpStatus> delete(@PathVariable("id") String id) {
         productCategoriesService.deleteByExternalId(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/{id}")
