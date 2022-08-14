@@ -3,20 +3,28 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.2</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
-	<groupId>ru.aakhm</groupId>
-	<artifactId>inflation-rest</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>InflationRestApp</name>
-	<description>Inflation REST service App</description>
-	<properties>
-		<java.version>11</java.version>
-	</properties>
-	<dependencies>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.7.2</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>ru.aakhm</groupId>
+    <artifactId>inflation-rest</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>InflationRestApp</name>
+    <description>Inflation REST service App</description>
+
+    <developers>
+        <developer>
+            <name>Arkadiy Akhmetshin</name>
+            <email>arkgah@gmail.com</email>
+        </developer>
+    </developers>
+
+    <properties>
+        <java.version>11</java.version>
+    </properties>
+    <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>

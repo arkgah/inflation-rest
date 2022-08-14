@@ -6,6 +6,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import ru.aakhm.inflationrest.dto.in.StoreInDTO;
 import ru.aakhm.inflationrest.dto.out.StoreOutDTO;
 import ru.aakhm.inflationrest.models.Store;
@@ -143,13 +146,14 @@ class StoresServiceTest {
 
     @Test
     void index() {
-        when(storesRepo.findAll()).thenReturn(repoIndex());
+        when(storesRepo.findAll(any(Pageable.class))).thenReturn(repoIndex());
         when(modelMapper.map(any(Store.class), any())).thenReturn(new StoreOutDTO());
 
         List<StoreOutDTO> resList = storesService.index(0, 10);
         assertNotNull(resList);
-        assertEquals(repoIndex().size(), resList.size());
-        verify(storesRepo, times(1)).findAll();
+        assertEquals(repoIndex().getContent().size(), resList.size());
+        verify(storesRepo, times(1)).findAll(any(Pageable.class));
+        verify(storesRepo, times(0)).findAll();
     }
 
     @Test
@@ -210,9 +214,8 @@ class StoresServiceTest {
         verify(storesRepo, times(1)).findByExternalId(anyString());
     }
 
-
-    private List<Store> repoIndex() {
-        return List.of(
+    private Page<Store> repoIndex() {
+        return new PageImpl<>(List.of(
                 new Store() {
                     {
                         setId(1);
@@ -234,6 +237,6 @@ class StoresServiceTest {
                         setName("Test3");
                     }
                 }
-        );
+        ));
     }
 }
