@@ -68,7 +68,7 @@ class StoresServiceTest {
         verify(modelMapper, times(1)).map(any(Store.class), any());
 
         assertNotNull(resStore);
-        assertEquals("Test", resStore.getName());
+        assertEquals(store.getName(), resStore.getName());
         assertEquals(EXTERNAL_ID, resStore.getExternalId());
 
     }
