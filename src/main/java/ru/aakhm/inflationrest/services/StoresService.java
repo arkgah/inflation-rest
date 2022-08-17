@@ -10,7 +10,6 @@ import ru.aakhm.inflationrest.dto.in.StoreInDTO;
 import ru.aakhm.inflationrest.dto.out.StoreOutDTO;
 import ru.aakhm.inflationrest.models.Store;
 import ru.aakhm.inflationrest.models.validation.except.store.StoreNotFoundException;
-import ru.aakhm.inflationrest.models.validation.except.store.StoreNotUpdatedException;
 import ru.aakhm.inflationrest.repo.StoresRepo;
 import ru.aakhm.inflationrest.utils.Utils;
 
@@ -58,7 +57,7 @@ public class StoresService implements ExternalIdAndNameService<StoreInDTO, Store
     public StoreOutDTO update(String externalId, StoreInDTO updatedStore) {
         Store storeEntity = findByExternalId(externalId)
                 .orElseThrow(
-                        () -> new StoreNotUpdatedException(utils.getMessageFromBundle("store.notfound.err")));
+                        () -> new StoreNotFoundException(utils.getMessageFromBundle("store.notfound.err")));
         storeEntity.setName(updatedStore.getName());
         storeEntity = storesRepo.save(storeEntity);
         return fromStoreToStoreOutDTO(storeEntity);

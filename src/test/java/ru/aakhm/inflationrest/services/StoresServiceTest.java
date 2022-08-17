@@ -13,7 +13,6 @@ import ru.aakhm.inflationrest.dto.in.StoreInDTO;
 import ru.aakhm.inflationrest.dto.out.StoreOutDTO;
 import ru.aakhm.inflationrest.models.Store;
 import ru.aakhm.inflationrest.models.validation.except.store.StoreNotFoundException;
-import ru.aakhm.inflationrest.models.validation.except.store.StoreNotUpdatedException;
 import ru.aakhm.inflationrest.repo.StoresRepo;
 import ru.aakhm.inflationrest.utils.Utils;
 
@@ -140,7 +139,7 @@ class StoresServiceTest {
 
         when(storesRepo.findByExternalId(EXTERNAL_ID)).thenReturn(Optional.empty());
 
-        assertThrows(StoreNotUpdatedException.class, () -> storesService.update(EXTERNAL_ID, storeInDTO));
+        assertThrows(StoreNotFoundException.class, () -> storesService.update(EXTERNAL_ID, storeInDTO));
         verify(storesRepo, times(0)).save(any());
     }
 
