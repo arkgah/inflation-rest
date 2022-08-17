@@ -93,7 +93,18 @@ public class ProductsService implements ExternalIdAndNameWithCategoryService<Pro
 
     @Override
     public List<ProductOutDTO> index(Integer page, Integer perPage) {
-        return productsRepo.findAll(PageRequest.of(page != null ? page : 0, perPage, Sort.by("category", "name"))).getContent()
+        return index(page, perPage, null, null);
+    }
+
+    @Override
+    public List<ProductOutDTO> index(Integer page, Integer perPage, String nameLike, String categoryNameLike) {
+        if (nameLike == null) {
+            return productsRepo.findAll(PageRequest.of(page != null ? page : 0, perPage, Sort.by("category", "name"))).getContent()
+                    .stream().map(this::fromProductToProductOutDto).collect(Collectors.toList());
+        }
+        String catNameLike = categoryNameLike != null ? categoryNameLike : "";
+        return productsRepo.findAllByNameContainingIgnoreCaseAndCategory_NameContainingIgnoreCase(
+                        PageRequest.of(page != null ? page : 0, perPage, Sort.by("category", "name")), nameLike, catNameLike).getContent()
                 .stream().map(this::fromProductToProductOutDto).collect(Collectors.toList());
     }
 

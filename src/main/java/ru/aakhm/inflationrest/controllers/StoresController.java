@@ -34,7 +34,7 @@ public class StoresController {
     @GetMapping
     public ResponseEntity<StoresOutDTO> index(
             @RequestParam(name = "page", required = false) Integer page,
-            @RequestParam(name = "per_page", required = false, defaultValue = "${stores.per_page}") Integer perPage) {
+            @RequestParam(name = "per-page", required = false, defaultValue = "${stores.per_page}") Integer perPage) {
         StoresOutDTO storesOutDTO = new StoresOutDTO();
         storesOutDTO.setStores(storesService.index(page, perPage));
         return new ResponseEntity<>(storesOutDTO, HttpStatus.OK);

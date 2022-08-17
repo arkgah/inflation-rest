@@ -64,7 +64,7 @@ public class PurchasesController {
     @GetMapping
     public ResponseEntity<PurchasesOutDTO> index(
             @RequestParam(name = "page", required = false) Integer page,
-            @RequestParam(name = "per_page", required = false, defaultValue = "${purchases.per_page}") Integer perPage) {
+            @RequestParam(name = "per-page", required = false, defaultValue = "${purchases.per_page}") Integer perPage) {
         PurchasesOutDTO purchasesOutDTO = new PurchasesOutDTO();
         purchasesOutDTO.setPurchases(purchasesService.index(page, perPage));
         return new ResponseEntity<>(purchasesOutDTO, HttpStatus.OK);
