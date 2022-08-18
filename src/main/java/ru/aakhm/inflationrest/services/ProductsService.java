@@ -52,7 +52,7 @@ public class ProductsService implements ExternalIdAndNameWithCategoryService<Pro
     public ProductOutDTO update(String externalId, ProductInDTO productInDTO) {
         Product product = findByExternalId(externalId)
                 .orElseThrow(() -> new ProductNotFoundException(utils.getMessageFromBundle("product.notfound.err")));
-        ProductCategory newCategory = productCategoriesRepo.findByName(
+        ProductCategory newCategory = productCategoriesRepo.getByName(
                         productInDTO.getCategory().getName())
                 .orElseThrow(() -> new ProductCategoryNotFoundException(
                         utils.getMessageFromBundle("productcategory.notfound.err")));
@@ -80,7 +80,7 @@ public class ProductsService implements ExternalIdAndNameWithCategoryService<Pro
     // readOnly = true methods
     @Override
     public Optional<ProductOutDTO> getByNameAndCategoryName(String name, String categoryName) {
-        Optional<ProductCategory> productCategory = productCategoriesRepo.findByName(categoryName);
+        Optional<ProductCategory> productCategory = productCategoriesRepo.getByName(categoryName);
         Optional<Product> product = productsRepo.getProductByNameAndCategory(
                 name,
                 productCategory.orElseThrow(
@@ -103,21 +103,21 @@ public class ProductsService implements ExternalIdAndNameWithCategoryService<Pro
                     .stream().map(this::fromProductToProductOutDto).collect(Collectors.toList());
         }
         String catNameLike = categoryNameLike != null ? categoryNameLike : "";
-        return productsRepo.findAllByNameContainingIgnoreCaseAndCategory_NameContainingIgnoreCase(
+        return productsRepo.getAllByNameContainingIgnoreCaseAndCategory_NameContainingIgnoreCase(
                         PageRequest.of(page != null ? page : 0, perPage, Sort.by("category", "name")), nameLike, catNameLike).getContent()
                 .stream().map(this::fromProductToProductOutDto).collect(Collectors.toList());
     }
 
     @Override
     public ProductOutDTO getByExternalId(String externalId) {
-        return productsRepo.findByExternalId(externalId)
+        return productsRepo.getByExternalId(externalId)
                 .map(this::fromProductToProductOutDto)
                 .orElseThrow(() -> new ProductNotFoundException(utils.getMessageFromBundle("product.notfound.err")));
     }
 
     // aux methods
     private Product fromProductInDtoToProduct(ProductInDTO productInDTO) {
-        Optional<ProductCategory> productCategory = productCategoriesRepo.findByName(productInDTO.getCategory().getName());
+        Optional<ProductCategory> productCategory = productCategoriesRepo.getByName(productInDTO.getCategory().getName());
         Product product = modelMapper.map(productInDTO, Product.class);
         product.setCategory(productCategory.orElseThrow(() -> new ProductCategoryNotFoundException(utils.getMessageFromBundle("productcategory.notfound.err"))));
         return product;
@@ -132,7 +132,7 @@ public class ProductsService implements ExternalIdAndNameWithCategoryService<Pro
     }
 
     private Optional<Product> findByExternalId(String externalId) {
-        return productsRepo.findByExternalId(externalId);
+        return productsRepo.getByExternalId(externalId);
     }
 
 }

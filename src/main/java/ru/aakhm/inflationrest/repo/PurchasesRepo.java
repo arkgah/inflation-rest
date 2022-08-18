@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface PurchasesRepo extends JpaRepository<Purchase, Integer> {
-    Optional<Purchase> findByExternalId(String externalId);
+    Optional<Purchase> getByExternalId(String externalId);
 
-    List<Purchase> findAllByPurchasedAtBetween(Date beginDate, Date endDate);
+    List<Purchase> getAllByPurchasedAtBetween(Date beginDate, Date endDate);
 }

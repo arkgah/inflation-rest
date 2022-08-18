@@ -67,7 +67,7 @@ public class PurchasesService implements ExternalIdService<PurchaseInDTO, Purcha
     public PurchaseOutDTO saveForPerson(PurchaseInDTO purchaseInDTO, String login) {
         Purchase purchase = fromPurchaseInDTOtoPurchase(purchaseInDTO);
         enrichPurchase(purchase);
-        purchase.setPerson(peopleRepo.findByLogin(login)
+        purchase.setPerson(peopleRepo.getByLogin(login)
                 .orElseThrow(() -> new PersonNotFoundException(
                         utils.getMessageFromBundle("person.notfound.err"))));
         return fromPurchaseToPurchaseOutDTO(purchasesRepo.save(purchase));
@@ -76,7 +76,7 @@ public class PurchasesService implements ExternalIdService<PurchaseInDTO, Purcha
     @Override
     @Transactional
     public PurchaseOutDTO update(String externalId, PurchaseInDTO purchaseInDTO) {
-        Purchase purchaseOld = purchasesRepo.findByExternalId(externalId)
+        Purchase purchaseOld = purchasesRepo.getByExternalId(externalId)
                 .orElseThrow(() -> new PurchaseNotFoundException(utils.getMessageFromBundle("purchase.notfound.err")));
 
         if (!userCanModifyPurchase(purchaseOld)) {
@@ -94,7 +94,7 @@ public class PurchasesService implements ExternalIdService<PurchaseInDTO, Purcha
     @Override
     @Transactional
     public void deleteByExternalId(String externalId) {
-        Purchase purchaseOld = purchasesRepo.findByExternalId(externalId)
+        Purchase purchaseOld = purchasesRepo.getByExternalId(externalId)
                 .orElseThrow(() -> new PurchaseNotFoundException(utils.getMessageFromBundle("purchase.notfound.err")));
 
         if (!userCanModifyPurchase(purchaseOld)) {
@@ -114,7 +114,7 @@ public class PurchasesService implements ExternalIdService<PurchaseInDTO, Purcha
 
     @Override
     public PurchaseOutDTO getByExternalId(String externalId) {
-        return purchasesRepo.findByExternalId(externalId).map(this::fromPurchaseToPurchaseOutDTO)
+        return purchasesRepo.getByExternalId(externalId).map(this::fromPurchaseToPurchaseOutDTO)
                 .orElseThrow(() -> new PurchaseNotFoundException(utils.getMessageFromBundle("purchase.notfound.err")));
     }
 
@@ -128,7 +128,7 @@ public class PurchasesService implements ExternalIdService<PurchaseInDTO, Purcha
         if (purchaseInDTO.getProduct().getCategory().getName() == null)
             throw new ProductCategoryNotFoundException(utils.getMessageFromBundle("productcategory.name.null"));
 
-        Optional<ProductCategory> productCategory = productCategoriesRepo.findByName(
+        Optional<ProductCategory> productCategory = productCategoriesRepo.getByName(
                 purchaseInDTO.getProduct().getCategory().getName());
 
         Optional<Product> product = productsRepo.getProductByNameAndCategory(
@@ -137,7 +137,7 @@ public class PurchasesService implements ExternalIdService<PurchaseInDTO, Purcha
                         .orElseThrow(
                                 () -> new ProductCategoryNotFoundException(
                                         utils.getMessageFromBundle("productcategory.notfound.err"))));
-        Optional<Store> store = storesRepo.findByName(purchaseInDTO.getStore().getName());
+        Optional<Store> store = storesRepo.getByName(purchaseInDTO.getStore().getName());
 
         Purchase purchase = modelMapper.map(purchaseInDTO, Purchase.class);
 
@@ -151,7 +151,7 @@ public class PurchasesService implements ExternalIdService<PurchaseInDTO, Purcha
         // При инициализации DB principal == null
         if (principal != null) {
             purchase.setPerson(
-                    peopleRepo.findByLogin(principal.getName())
+                    peopleRepo.getByLogin(principal.getName())
                             .orElseThrow(() -> new PersonNotFoundException(
                                     utils.getMessageFromBundle("person.notfound.err"))));
         }

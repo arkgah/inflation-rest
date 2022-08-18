@@ -62,12 +62,12 @@ public class RegistrationService {
     }
 
     public String getExternalIdByLogin(String login) {
-        Optional<Person> person = peopleRepo.findByLogin(login);
+        Optional<Person> person = peopleRepo.getByLogin(login);
         return person.map(Person::getExternalId).orElseThrow(() -> new PersonNotFoundException(utils.getMessageFromBundle("person.notfound.err")));
     }
 
     private Person findByExternalId(String externalId) {
-        return peopleRepo.findByExternalId(externalId).orElseThrow(() -> new PersonNotFoundException(utils.getMessageFromBundle("person.notfound.err")));
+        return peopleRepo.getByExternalId(externalId).orElseThrow(() -> new PersonNotFoundException(utils.getMessageFromBundle("person.notfound.err")));
     }
 
     private Person fromPersonInDtoToPerson(PersonInDTO personInDTO) {

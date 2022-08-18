@@ -71,18 +71,18 @@ public class ProductCategoriesService implements ExternalIdAndNameService<Produc
 
     @Override
     public Optional<ProductCategoryOutDTO> getByName(String name) {
-        return productCategoriesRepo.findByName(name).map(this::fromProductCategoryToProductCategoryOutDto);
+        return productCategoriesRepo.getByName(name).map(this::fromProductCategoryToProductCategoryOutDto);
     }
 
     @Override
     public ProductCategoryOutDTO getByExternalId(String externalId) {
-        return productCategoriesRepo.findByExternalId(externalId)
+        return productCategoriesRepo.getByExternalId(externalId)
                 .map(this::fromProductCategoryToProductCategoryOutDto)
                 .orElseThrow(() -> new ProductCategoryNotFoundException(utils.getMessageFromBundle("productcategory.notfound.err")));
     }
 
     private Optional<ProductCategory> findByExternalId(String externalId) {
-        return productCategoriesRepo.findByExternalId(externalId);
+        return productCategoriesRepo.getByExternalId(externalId);
     }
 
 

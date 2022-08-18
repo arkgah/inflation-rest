@@ -40,12 +40,12 @@ public class AnalyticsService {
                 LocalDate.ofInstant(endDate.toInstant(), ZoneId.systemDefault()));
 
         List<Purchase> purchaseList1 =
-                purchasesRepo.findAllByPurchasedAtBetween(
+                purchasesRepo.getAllByPurchasedAtBetween(
                         Date.from(events.getLocalDateTime11().atZone(ZoneId.systemDefault()).toInstant()),
                         Date.from(events.getLocalDateTime12().atZone(ZoneId.systemDefault()).toInstant()));
 
         List<Purchase> purchaseList2 =
-                purchasesRepo.findAllByPurchasedAtBetween(
+                purchasesRepo.getAllByPurchasedAtBetween(
                         Date.from(events.getLocalDateTime21().atZone(ZoneId.systemDefault()).toInstant()),
                         Date.from(events.getLocalDateTime22().atZone(ZoneId.systemDefault()).toInstant()));
 

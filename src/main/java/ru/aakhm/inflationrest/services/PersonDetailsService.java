@@ -41,7 +41,7 @@ public class PersonDetailsService implements UserDetailsService {
     @Transactional
     public void assignRole(String externalId, String roleName) {
         Optional<PersonRole> role = rolesRepo.getByName(roleName);
-        Optional<Person> person = peopleRepo.findByExternalId(externalId);
+        Optional<Person> person = peopleRepo.getByExternalId(externalId);
 
         person.ifPresentOrElse(p -> p.setRole(
                         role.orElseThrow(() -> new PersonRoleNotFoundException(utils.getMessageFromBundle("personrole.notfound.err")))
@@ -53,24 +53,24 @@ public class PersonDetailsService implements UserDetailsService {
 
     @Transactional
     public void delete(String externalId) {
-        Optional<Person> person = peopleRepo.findByExternalId(externalId);
+        Optional<Person> person = peopleRepo.getByExternalId(externalId);
         peopleRepo.delete(person.orElseThrow(() -> new PersonNotFoundException(utils.getMessageFromBundle("person.notfound.err"))));
     }
 
     // readOnly = true methods
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<Person> person = peopleRepo.findByLogin(username);
+        Optional<Person> person = peopleRepo.getByLogin(username);
 
         return person.map(PersonDetails::new).orElseThrow(() -> new UsernameNotFoundException(utils.getMessageFromBundle("person.login.notfound.err")));
     }
 
     public Optional<PersonOutDTO> getByLogin(String login) {
-        return peopleRepo.findByLogin(login).map(this::fromPersonToPersonOutDto);
+        return peopleRepo.getByLogin(login).map(this::fromPersonToPersonOutDto);
     }
 
     public PersonOutDTO getByExternalId(String externalId) {
-        return peopleRepo.findByExternalId(externalId)
+        return peopleRepo.getByExternalId(externalId)
                 .map(this::fromPersonToPersonOutDto)
                 .orElseThrow(() -> new PersonNotFoundException(utils.getMessageFromBundle("person.notfound.err")));
     }

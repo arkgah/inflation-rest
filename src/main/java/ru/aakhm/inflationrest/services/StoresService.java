@@ -73,18 +73,18 @@ public class StoresService implements ExternalIdAndNameService<StoreInDTO, Store
 
     @Override
     public Optional<StoreOutDTO> getByName(String name) {
-        return storesRepo.findByName(name).map(this::fromStoreToStoreOutDTO);
+        return storesRepo.getByName(name).map(this::fromStoreToStoreOutDTO);
     }
 
     @Override
     public StoreOutDTO getByExternalId(String externalId) {
-        return storesRepo.findByExternalId(externalId)
+        return storesRepo.getByExternalId(externalId)
                 .map(this::fromStoreToStoreOutDTO)
                 .orElseThrow(() -> new StoreNotFoundException(utils.getMessageFromBundle("store.notfound.err")));
     }
 
     private Optional<Store> findByExternalId(String externalId) {
-        return storesRepo.findByExternalId(externalId);
+        return storesRepo.getByExternalId(externalId);
     }
 
 

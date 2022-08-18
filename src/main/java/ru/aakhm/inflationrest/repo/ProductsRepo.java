@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface ProductsRepo extends JpaRepository<Product, Integer> {
     Optional<Product> getProductByNameAndCategory(String name, ProductCategory productCategory);
 
-    Optional<Product> findByExternalId(String externalId);
+    Optional<Product> getByExternalId(String externalId);
 
-    Page<Product> findAllByNameContainingIgnoreCaseAndCategory_NameContainingIgnoreCase(Pageable pageable, String nameLike, String categoryNameLike);
+    Page<Product> getAllByNameContainingIgnoreCaseAndCategory_NameContainingIgnoreCase(Pageable pageable, String nameLike, String categoryNameLike);
 }

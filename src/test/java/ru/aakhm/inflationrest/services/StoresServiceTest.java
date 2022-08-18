@@ -53,7 +53,7 @@ class StoresServiceTest {
         storeOutDTO.setName(storeInDTO.getName());
         storeOutDTO.setExternalId(EXTERNAL_ID);
 
-        when(storesRepo.findByName(storeInDTO.getName())).thenReturn(Optional.empty());
+        when(storesRepo.getByName(storeInDTO.getName())).thenReturn(Optional.empty());
         when(storesRepo.save(any(Store.class))).thenReturn(store);
         when(utils.generateExternalId()).thenReturn(EXTERNAL_ID);
 
@@ -79,7 +79,7 @@ class StoresServiceTest {
         store.setExternalId(EXTERNAL_ID);
         store.setName("Test");
 
-        when(storesRepo.findByExternalId(EXTERNAL_ID)).thenReturn(Optional.of(store));
+        when(storesRepo.getByExternalId(EXTERNAL_ID)).thenReturn(Optional.of(store));
 
         storesService.deleteByExternalId(EXTERNAL_ID);
         verify(storesRepo, times(1)).deleteById(anyInt());
@@ -92,7 +92,7 @@ class StoresServiceTest {
         store.setExternalId(EXTERNAL_ID);
         store.setName("Test");
 
-        when(storesRepo.findByExternalId(EXTERNAL_ID)).thenReturn(Optional.empty());
+        when(storesRepo.getByExternalId(EXTERNAL_ID)).thenReturn(Optional.empty());
 
         assertThrows(StoreNotFoundException.class, () -> storesService.deleteByExternalId(EXTERNAL_ID));
         verify(storesRepo, times(0)).deleteById(anyInt());
@@ -115,7 +115,7 @@ class StoresServiceTest {
         storeOutDTO.setExternalId(EXTERNAL_ID);
 
 
-        when(storesRepo.findByExternalId(EXTERNAL_ID)).thenReturn(Optional.of(store));
+        when(storesRepo.getByExternalId(EXTERNAL_ID)).thenReturn(Optional.of(store));
         when(storesRepo.save(any(Store.class))).thenReturn(store);
         when(modelMapper.map(any(Store.class), any())).thenReturn(storeOutDTO);
 
@@ -137,7 +137,7 @@ class StoresServiceTest {
         StoreInDTO storeInDTO = new StoreInDTO();
         storeInDTO.setName(NAME);
 
-        when(storesRepo.findByExternalId(EXTERNAL_ID)).thenReturn(Optional.empty());
+        when(storesRepo.getByExternalId(EXTERNAL_ID)).thenReturn(Optional.empty());
 
         assertThrows(StoreNotFoundException.class, () -> storesService.update(EXTERNAL_ID, storeInDTO));
         verify(storesRepo, times(0)).save(any());
@@ -164,24 +164,24 @@ class StoresServiceTest {
         StoreOutDTO storeOutDTO = new StoreOutDTO();
         storeOutDTO.setName(NAME);
 
-        when(storesRepo.findByName(NAME)).thenReturn(Optional.of(store));
+        when(storesRepo.getByName(NAME)).thenReturn(Optional.of(store));
         when(modelMapper.map(any(Store.class), any())).thenReturn(storeOutDTO);
 
         Optional<StoreOutDTO> resStore = storesService.getByName(NAME);
         assertNotNull(resStore);
         assertTrue(resStore.isPresent());
         assertEquals(NAME, resStore.get().getName());
-        verify(storesRepo, times(1)).findByName(anyString());
+        verify(storesRepo, times(1)).getByName(anyString());
     }
 
     @Test
     void getByName_storeDoesntExist() {
         final String NAME = "Test";
-        when(storesRepo.findByName(NAME)).thenReturn(Optional.empty());
+        when(storesRepo.getByName(NAME)).thenReturn(Optional.empty());
 
         Optional<StoreOutDTO> resStore = storesService.getByName(NAME);
         assertFalse(resStore.isPresent());
-        verify(storesRepo, times(1)).findByName(anyString());
+        verify(storesRepo, times(1)).getByName(anyString());
     }
 
 
@@ -194,23 +194,23 @@ class StoresServiceTest {
         StoreOutDTO storeOutDTO = new StoreOutDTO();
         storeOutDTO.setExternalId(EXTERNAL_ID);
 
-        when(storesRepo.findByExternalId(EXTERNAL_ID)).thenReturn(Optional.of(store));
+        when(storesRepo.getByExternalId(EXTERNAL_ID)).thenReturn(Optional.of(store));
         when(modelMapper.map(any(Store.class), any())).thenReturn(storeOutDTO);
 
         StoreOutDTO resStore = storesService.getByExternalId(EXTERNAL_ID);
         assertNotNull(resStore);
 
         assertEquals(EXTERNAL_ID, resStore.getExternalId());
-        verify(storesRepo, times(1)).findByExternalId(anyString());
+        verify(storesRepo, times(1)).getByExternalId(anyString());
     }
 
     @Test
     void getByExternalId_storeDoesntExist() {
         final String EXTERNAL_ID = "123abc";
-        when(storesRepo.findByExternalId(EXTERNAL_ID)).thenReturn(Optional.empty());
+        when(storesRepo.getByExternalId(EXTERNAL_ID)).thenReturn(Optional.empty());
 
         assertThrows(StoreNotFoundException.class, () -> storesService.getByExternalId(EXTERNAL_ID));
-        verify(storesRepo, times(1)).findByExternalId(anyString());
+        verify(storesRepo, times(1)).getByExternalId(anyString());
     }
 
     private Page<Store> repoIndex() {

@@ -58,7 +58,7 @@ class ProductCategoriesServiceTest {
         pcOutDTO.setName(pcInDTO.getName());
         pcOutDTO.setExternalId(EXTERNAL_ID);
 
-        when(productCategoriesRepo.findByName(productCategory.getName())).thenReturn(Optional.empty());
+        when(productCategoriesRepo.getByName(productCategory.getName())).thenReturn(Optional.empty());
         when(productCategoriesRepo.save(any(ProductCategory.class))).thenReturn(productCategory);
         when(utils.generateExternalId()).thenReturn(EXTERNAL_ID);
 
@@ -82,7 +82,7 @@ class ProductCategoriesServiceTest {
         productCategory.setExternalId(EXTERNAL_ID);
         productCategory.setName("Test");
 
-        when(productCategoriesRepo.findByExternalId(EXTERNAL_ID)).thenReturn(Optional.of(productCategory));
+        when(productCategoriesRepo.getByExternalId(EXTERNAL_ID)).thenReturn(Optional.of(productCategory));
 
         productCategoriesService.deleteByExternalId(EXTERNAL_ID);
         verify(productCategoriesRepo, times(1)).deleteById(anyInt());
@@ -95,7 +95,7 @@ class ProductCategoriesServiceTest {
         productCategory.setExternalId(EXTERNAL_ID);
         productCategory.setName("Test");
 
-        when(productCategoriesRepo.findByExternalId(EXTERNAL_ID)).thenReturn(Optional.empty());
+        when(productCategoriesRepo.getByExternalId(EXTERNAL_ID)).thenReturn(Optional.empty());
 
         assertThrows(ProductCategoryNotFoundException.class, () -> productCategoriesService.deleteByExternalId(EXTERNAL_ID));
         verify(productCategoriesRepo, times(0)).deleteById(anyInt());
@@ -119,7 +119,7 @@ class ProductCategoriesServiceTest {
         pcOutDTO.setExternalId(EXTERNAL_ID);
 
 
-        when(productCategoriesRepo.findByExternalId(EXTERNAL_ID)).thenReturn(Optional.of(productCategory));
+        when(productCategoriesRepo.getByExternalId(EXTERNAL_ID)).thenReturn(Optional.of(productCategory));
         when(productCategoriesRepo.save(any(ProductCategory.class))).thenReturn(productCategory);
         when(modelMapper.map(any(ProductCategory.class), any())).thenReturn(pcOutDTO);
 
@@ -142,7 +142,7 @@ class ProductCategoriesServiceTest {
         ProductCategoryInDTO pcInDTO = new ProductCategoryInDTO();
         pcInDTO.setName(NAME);
 
-        when(productCategoriesRepo.findByExternalId(EXTERNAL_ID)).thenReturn(Optional.empty());
+        when(productCategoriesRepo.getByExternalId(EXTERNAL_ID)).thenReturn(Optional.empty());
 
         assertThrows(ProductCategoryNotFoundException.class, () -> productCategoriesService.update(EXTERNAL_ID, pcInDTO));
         verify(productCategoriesRepo, times(0)).save(any());
@@ -169,33 +169,33 @@ class ProductCategoriesServiceTest {
         ProductCategoryOutDTO pcOutDTO = new ProductCategoryOutDTO();
         pcOutDTO.setName(NAME);
 
-        when(productCategoriesRepo.findByName(NAME)).thenReturn(Optional.of(productCategory));
+        when(productCategoriesRepo.getByName(NAME)).thenReturn(Optional.of(productCategory));
         when(modelMapper.map(any(ProductCategory.class), any())).thenReturn(pcOutDTO);
 
         Optional<ProductCategoryOutDTO> resPC = productCategoriesService.getByName(NAME);
         assertNotNull(resPC);
         assertTrue(resPC.isPresent());
         assertEquals(NAME, resPC.get().getName());
-        verify(productCategoriesRepo, times(1)).findByName(anyString());
+        verify(productCategoriesRepo, times(1)).getByName(anyString());
     }
 
     @Test
     void getByName_productCategoryDoesntExist() {
         final String NAME = "Test";
-        when(productCategoriesRepo.findByName(NAME)).thenReturn(Optional.empty());
+        when(productCategoriesRepo.getByName(NAME)).thenReturn(Optional.empty());
 
         Optional<ProductCategoryOutDTO> resPC = productCategoriesService.getByName(NAME);
         assertFalse(resPC.isPresent());
-        verify(productCategoriesRepo, times(1)).findByName(anyString());
+        verify(productCategoriesRepo, times(1)).getByName(anyString());
     }
 
     @Test
     void getByExternalId_productCategoryExists() {
         final String EXTERNAL_ID = "123abc";
-        when(productCategoriesRepo.findByExternalId(EXTERNAL_ID)).thenReturn(Optional.empty());
+        when(productCategoriesRepo.getByExternalId(EXTERNAL_ID)).thenReturn(Optional.empty());
 
         assertThrows(ProductCategoryNotFoundException.class, () -> productCategoriesService.getByExternalId(EXTERNAL_ID));
-        verify(productCategoriesRepo, times(1)).findByExternalId(anyString());
+        verify(productCategoriesRepo, times(1)).getByExternalId(anyString());
     }
 
     @Test
