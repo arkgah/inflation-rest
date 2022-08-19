@@ -32,8 +32,14 @@ public class PurchaseInDTOValidator implements Validator {
             errors.rejectValue("product.category", utils.getMessageFromBundle("product.category.null.err"));
             return;
         }
-        if (purchaseInDTO.getProduct().getCategory().getName() == null)
-            errors.rejectValue("product.category.name", utils.getMessageFromBundle("productcategory.name.null"));
+        if (purchaseInDTO.getProduct().getCategory().getName() == null) {
+            errors.rejectValue("product.category.name", utils.getMessageFromBundle("productcategory.name.null.err"));
+            return;
+        }
+        if (purchaseInDTO.getStore().getName() == null) {
+            errors.rejectValue("store.name", utils.getMessageFromBundle("store.name.null.err"));
+            return;
+        }
 
     }
 }

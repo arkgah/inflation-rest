@@ -121,13 +121,6 @@ public class PurchasesService implements ExternalIdService<PurchaseInDTO, Purcha
     // ========
     // utility methods
     private Purchase fromPurchaseInDTOtoPurchase(PurchaseInDTO purchaseInDTO) {
-        if (purchaseInDTO.getProduct().getName() == null)
-            throw new ProductNotFoundException(utils.getMessageFromBundle("product.name.null.err"));
-        if (purchaseInDTO.getProduct().getCategory() == null)
-            throw new ProductCategoryNotFoundException(utils.getMessageFromBundle("product.category.null.err"));
-        if (purchaseInDTO.getProduct().getCategory().getName() == null)
-            throw new ProductCategoryNotFoundException(utils.getMessageFromBundle("productcategory.name.null"));
-
         Optional<ProductCategory> productCategory = productCategoriesRepo.getByName(
                 purchaseInDTO.getProduct().getCategory().getName());
 
