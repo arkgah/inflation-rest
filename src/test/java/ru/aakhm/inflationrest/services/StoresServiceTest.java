@@ -73,25 +73,20 @@ class StoresServiceTest {
     }
 
     @Test
-    void deleteByExternalId_storeExists() {
+    void deleteByExternalId() {
         final String EXTERNAL_ID = "123abc";
         Store store = new Store();
         store.setExternalId(EXTERNAL_ID);
         store.setName("Test");
 
+        // store существует
         when(storesRepo.getByExternalId(EXTERNAL_ID)).thenReturn(Optional.of(store));
 
         storesService.deleteByExternalId(EXTERNAL_ID);
         verify(storesRepo, times(1)).deleteById(anyInt());
-    }
 
-    @Test
-    void deleteByExternalId_storeDoesntExist() {
-        final String EXTERNAL_ID = "123abc";
-        Store store = new Store();
-        store.setExternalId(EXTERNAL_ID);
-        store.setName("Test");
-
+        // store не существует
+        reset(storesRepo);
         when(storesRepo.getByExternalId(EXTERNAL_ID)).thenReturn(Optional.empty());
 
         assertThrows(StoreNotFoundException.class, () -> storesService.deleteByExternalId(EXTERNAL_ID));
@@ -99,7 +94,7 @@ class StoresServiceTest {
     }
 
     @Test
-    void update_storeExists() {
+    void update() {
         final String EXTERNAL_ID = "123abc";
         final String NAME = "Test";
 
@@ -114,7 +109,7 @@ class StoresServiceTest {
         storeOutDTO.setName(NAME);
         storeOutDTO.setExternalId(EXTERNAL_ID);
 
-
+        // store существует
         when(storesRepo.getByExternalId(EXTERNAL_ID)).thenReturn(Optional.of(store));
         when(storesRepo.save(any(Store.class))).thenReturn(store);
         when(modelMapper.map(any(Store.class), any())).thenReturn(storeOutDTO);
@@ -125,20 +120,10 @@ class StoresServiceTest {
         assertNotNull(resStore);
         assertEquals(EXTERNAL_ID, resStore.getExternalId());
         assertEquals(NAME, resStore.getName());
-    }
 
-    @Test
-    void update_storeDoesntExist() {
-        final String EXTERNAL_ID = "123abc";
-        final String NAME = "Test";
-        Store store = new Store();
-        store.setExternalId(EXTERNAL_ID);
-
-        StoreInDTO storeInDTO = new StoreInDTO();
-        storeInDTO.setName(NAME);
-
+        // store не существует
+        reset(storesRepo);
         when(storesRepo.getByExternalId(EXTERNAL_ID)).thenReturn(Optional.empty());
-
         assertThrows(StoreNotFoundException.class, () -> storesService.update(EXTERNAL_ID, storeInDTO));
         verify(storesRepo, times(0)).save(any());
     }
@@ -156,7 +141,7 @@ class StoresServiceTest {
     }
 
     @Test
-    void getByName_storeExists() {
+    void getByName() {
         final String NAME = "Test";
         Store store = new Store();
         store.setName(NAME);
@@ -164,6 +149,7 @@ class StoresServiceTest {
         StoreOutDTO storeOutDTO = new StoreOutDTO();
         storeOutDTO.setName(NAME);
 
+        // store существует
         when(storesRepo.getByName(NAME)).thenReturn(Optional.of(store));
         when(modelMapper.map(any(Store.class), any())).thenReturn(storeOutDTO);
 
@@ -172,21 +158,19 @@ class StoresServiceTest {
         assertTrue(resStore.isPresent());
         assertEquals(NAME, resStore.get().getName());
         verify(storesRepo, times(1)).getByName(anyString());
-    }
 
-    @Test
-    void getByName_storeDoesntExist() {
-        final String NAME = "Test";
+
+        // store не существует
+        reset(storesRepo);
         when(storesRepo.getByName(NAME)).thenReturn(Optional.empty());
 
-        Optional<StoreOutDTO> resStore = storesService.getByName(NAME);
+        resStore = storesService.getByName(NAME);
         assertFalse(resStore.isPresent());
         verify(storesRepo, times(1)).getByName(anyString());
     }
 
-
     @Test
-    void getByExternalId_storeExists() {
+    void getByExternalId() {
         final String EXTERNAL_ID = "123abc";
         Store store = new Store();
         store.setExternalId(EXTERNAL_ID);
@@ -194,6 +178,7 @@ class StoresServiceTest {
         StoreOutDTO storeOutDTO = new StoreOutDTO();
         storeOutDTO.setExternalId(EXTERNAL_ID);
 
+        // store существует
         when(storesRepo.getByExternalId(EXTERNAL_ID)).thenReturn(Optional.of(store));
         when(modelMapper.map(any(Store.class), any())).thenReturn(storeOutDTO);
 
@@ -202,11 +187,9 @@ class StoresServiceTest {
 
         assertEquals(EXTERNAL_ID, resStore.getExternalId());
         verify(storesRepo, times(1)).getByExternalId(anyString());
-    }
 
-    @Test
-    void getByExternalId_storeDoesntExist() {
-        final String EXTERNAL_ID = "123abc";
+        // store не существует
+        reset(storesRepo);
         when(storesRepo.getByExternalId(EXTERNAL_ID)).thenReturn(Optional.empty());
 
         assertThrows(StoreNotFoundException.class, () -> storesService.getByExternalId(EXTERNAL_ID));

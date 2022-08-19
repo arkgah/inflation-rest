@@ -76,34 +76,28 @@ class ProductCategoriesServiceTest {
     }
 
     @Test
-    void deleteByExternalId_productCategoryExists() {
+    void deleteByExternalId() {
         final String EXTERNAL_ID = "123abc";
         ProductCategory productCategory = new ProductCategory();
         productCategory.setExternalId(EXTERNAL_ID);
         productCategory.setName("Test");
 
+        // product category существует
         when(productCategoriesRepo.getByExternalId(EXTERNAL_ID)).thenReturn(Optional.of(productCategory));
 
         productCategoriesService.deleteByExternalId(EXTERNAL_ID);
         verify(productCategoriesRepo, times(1)).deleteById(anyInt());
-    }
 
-    @Test
-    void deleteByExternalId_productCategoryDoesntExist() {
-        final String EXTERNAL_ID = "123abc";
-        ProductCategory productCategory = new ProductCategory();
-        productCategory.setExternalId(EXTERNAL_ID);
-        productCategory.setName("Test");
-
+        // product category не существует
+        reset(productCategoriesRepo);
         when(productCategoriesRepo.getByExternalId(EXTERNAL_ID)).thenReturn(Optional.empty());
 
         assertThrows(ProductCategoryNotFoundException.class, () -> productCategoriesService.deleteByExternalId(EXTERNAL_ID));
         verify(productCategoriesRepo, times(0)).deleteById(anyInt());
     }
 
-
     @Test
-    void update_productCategoryExists() {
+    void update() {
         final String EXTERNAL_ID = "123abc";
         final String NAME = "Test";
 
@@ -118,7 +112,7 @@ class ProductCategoriesServiceTest {
         pcOutDTO.setName(pcInDTO.getName());
         pcOutDTO.setExternalId(EXTERNAL_ID);
 
-
+        // product category существует
         when(productCategoriesRepo.getByExternalId(EXTERNAL_ID)).thenReturn(Optional.of(productCategory));
         when(productCategoriesRepo.save(any(ProductCategory.class))).thenReturn(productCategory);
         when(modelMapper.map(any(ProductCategory.class), any())).thenReturn(pcOutDTO);
@@ -129,19 +123,9 @@ class ProductCategoriesServiceTest {
         assertNotNull(resProductCategory);
         assertEquals(EXTERNAL_ID, resProductCategory.getExternalId());
         assertEquals(NAME, resProductCategory.getName());
-    }
 
-    @Test
-    void update_productCategoryDoesntExist() {
-        final String EXTERNAL_ID = "123abc";
-        final String NAME = "Test";
-
-        ProductCategory productCategory = new ProductCategory();
-        productCategory.setName(NAME);
-
-        ProductCategoryInDTO pcInDTO = new ProductCategoryInDTO();
-        pcInDTO.setName(NAME);
-
+        // product category не существует
+        reset(productCategoriesRepo);
         when(productCategoriesRepo.getByExternalId(EXTERNAL_ID)).thenReturn(Optional.empty());
 
         assertThrows(ProductCategoryNotFoundException.class, () -> productCategoriesService.update(EXTERNAL_ID, pcInDTO));
@@ -161,7 +145,7 @@ class ProductCategoriesServiceTest {
     }
 
     @Test
-    void getByName_productCategoryExists() {
+    void getByName() {
         final String NAME = "Test";
         ProductCategory productCategory = new ProductCategory();
         productCategory.setName(NAME);
@@ -169,6 +153,7 @@ class ProductCategoriesServiceTest {
         ProductCategoryOutDTO pcOutDTO = new ProductCategoryOutDTO();
         pcOutDTO.setName(NAME);
 
+        // product category существует
         when(productCategoriesRepo.getByName(NAME)).thenReturn(Optional.of(productCategory));
         when(modelMapper.map(any(ProductCategory.class), any())).thenReturn(pcOutDTO);
 
@@ -177,30 +162,49 @@ class ProductCategoriesServiceTest {
         assertTrue(resPC.isPresent());
         assertEquals(NAME, resPC.get().getName());
         verify(productCategoriesRepo, times(1)).getByName(anyString());
-    }
 
-    @Test
-    void getByName_productCategoryDoesntExist() {
-        final String NAME = "Test";
-        when(productCategoriesRepo.getByName(NAME)).thenReturn(Optional.empty());
-
-        Optional<ProductCategoryOutDTO> resPC = productCategoriesService.getByName(NAME);
+        // product category не существует
+        reset(productCategoriesRepo);
+        resPC = productCategoriesService.getByName(NAME);
         assertFalse(resPC.isPresent());
         verify(productCategoriesRepo, times(1)).getByName(anyString());
     }
 
+
     @Test
-    void getByExternalId_productCategoryExists() {
+    void getByExternalId() {
         final String EXTERNAL_ID = "123abc";
+        final String NAME = "Test";
+        ProductCategory productCategory = new ProductCategory() {
+            {
+                setName(NAME);
+                setExternalId(EXTERNAL_ID);
+            }
+        };
+
+        ProductCategoryOutDTO pcOutDTO = new ProductCategoryOutDTO() {
+            {
+                setName(NAME);
+                setExternalId(EXTERNAL_ID);
+            }
+        };
+
+        // product category существует
+        when(productCategoriesRepo.getByExternalId(EXTERNAL_ID)).thenReturn(Optional.of(productCategory));
+        when(modelMapper.map(any(ProductCategory.class), any())).thenReturn(pcOutDTO);
+        ProductCategoryOutDTO resPC = productCategoriesService.getByExternalId(EXTERNAL_ID);
+        assertNotNull(resPC);
+        assertEquals(NAME, resPC.getName());
+        assertEquals(EXTERNAL_ID, resPC.getExternalId());
+
+        // product category не существует
+        reset(productCategoriesRepo);
         when(productCategoriesRepo.getByExternalId(EXTERNAL_ID)).thenReturn(Optional.empty());
 
         assertThrows(ProductCategoryNotFoundException.class, () -> productCategoriesService.getByExternalId(EXTERNAL_ID));
         verify(productCategoriesRepo, times(1)).getByExternalId(anyString());
     }
 
-    @Test
-    void getByExternalId_productCategoryDoesntExist() {
-    }
 
     private Page<ProductCategory> repoIndex() {
         return new PageImpl<>(List.of(
