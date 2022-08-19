@@ -6,6 +6,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import ru.aakhm.inflationrest.dto.in.ProductCategoryInDTO;
 import ru.aakhm.inflationrest.dto.in.ProductInDTO;
 import ru.aakhm.inflationrest.dto.out.ProductCategoryOutDTO;
@@ -19,6 +22,7 @@ import ru.aakhm.inflationrest.repo.ProductCategoriesRepo;
 import ru.aakhm.inflationrest.repo.ProductsRepo;
 import ru.aakhm.inflationrest.utils.Utils;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -168,21 +172,80 @@ class ProductsServiceTest {
 
     @Test
     void deleteByExternalId() {
+        // product существует
+        when(productsRepo.getByExternalId(PRODUCT_EXTERNAL_ID)).thenReturn(Optional.of(product));
+        assertDoesNotThrow(() -> productsService.deleteByExternalId(PRODUCT_EXTERNAL_ID));
+        verify(productsRepo, times(1)).delete(any(Product.class));
+
+        // product не существует
+        reset(productsRepo);
+        when(productsRepo.getByExternalId(PRODUCT_EXTERNAL_ID)).thenReturn(Optional.empty());
+        assertThrows(ProductNotFoundException.class, () -> productsService.deleteByExternalId(PRODUCT_EXTERNAL_ID));
+        verify(productsRepo, times(0)).delete(any(Product.class));
     }
 
     @Test
     void getByNameAndCategoryName() {
+        // product category существует
+        when(productCategoriesRepo.getByName(PRODUCT_CAT_NAME)).thenReturn(Optional.of(productCategory));
+        when(productsRepo.getProductByNameAndCategory(PRODUCT_NAME, productCategory)).thenReturn(Optional.of(product));
+        when(modelMapper.map(any(Product.class), any())).thenReturn(productOutDTO);
+
+        Optional<ProductOutDTO> resProduct = productsService.getByNameAndCategoryName(PRODUCT_NAME, PRODUCT_CAT_NAME);
+        verify(productCategoriesRepo, times(1)).getByName(any(String.class));
+        verify(productsRepo, times(1)).getProductByNameAndCategory(any(String.class), any(ProductCategory.class));
+
+        assertTrue(resProduct.isPresent());
+        assertEquals(PRODUCT_NAME, resProduct.get().getName());
+        assertEquals(PRODUCT_EXTERNAL_ID, resProduct.get().getExternalId());
+        assertNotNull(resProduct.get().getCategory());
+        assertEquals(PRODUCT_CAT_NAME, resProduct.get().getCategory().getName());
+
+        // product category не существует
+        reset(productsRepo);
+        reset(productCategoriesRepo);
+        when(productCategoriesRepo.getByName(PRODUCT_CAT_NAME)).thenReturn(Optional.empty());
+        assertThrows(ProductCategoryNotFoundException.class,
+                () -> productsService.getByNameAndCategoryName(PRODUCT_NAME, PRODUCT_CAT_NAME));
+        verify(productCategoriesRepo, times(1)).getByName(any(String.class));
+        verify(productsRepo, times(0)).getProductByNameAndCategory(any(String.class), any(ProductCategory.class));
     }
 
     @Test
     void index() {
-    }
+        when(productsRepo.findAll(any(Pageable.class))).thenReturn(repoIndex());
+        when(modelMapper.map(any(Product.class), any())).thenReturn(new ProductOutDTO());
 
-    @Test
-    void testIndex() {
+        List<ProductOutDTO> resProducts = productsService.index(0, 10);
+        assertNotNull(resProducts);
+        assertEquals(repoIndex().getContent().size(), resProducts.size());
+        verify(productsRepo, times(1)).findAll(any(Pageable.class));
+        verify(productsRepo, times(0)).findAll();
     }
 
     @Test
     void getByExternalId() {
+        // product существует
+        when(productsRepo.getByExternalId(PRODUCT_EXTERNAL_ID)).thenReturn(Optional.of(product));
+        when(modelMapper.map(any(Product.class), any())).thenReturn(productOutDTO);
+
+        ProductOutDTO resProduct = productsService.getByExternalId(PRODUCT_EXTERNAL_ID);
+        verify(productsRepo, times(1)).getByExternalId(any(String.class));
+        assertNotNull(resProduct);
+        assertEquals(PRODUCT_NAME, resProduct.getName());
+        assertEquals(PRODUCT_EXTERNAL_ID, resProduct.getExternalId());
+
+        // product не существует
+        reset(productsRepo);
+        when(productsRepo.getByExternalId(PRODUCT_EXTERNAL_ID)).thenReturn(Optional.empty());
+        assertThrows(ProductNotFoundException.class, () -> productsService.getByExternalId(PRODUCT_EXTERNAL_ID));
+    }
+
+    private Page<Product> repoIndex() {
+        return new PageImpl<>(List.of(
+                new Product(),
+                new Product(),
+                new Product()
+        ));
     }
 }
