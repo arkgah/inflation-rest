@@ -10,10 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.aakhm.inflationrest.dto.in.PurchaseInDTO;
 import ru.aakhm.inflationrest.dto.out.PurchaseOutDTO;
-import ru.aakhm.inflationrest.models.Product;
-import ru.aakhm.inflationrest.models.ProductCategory;
-import ru.aakhm.inflationrest.models.Purchase;
-import ru.aakhm.inflationrest.models.Store;
+import ru.aakhm.inflationrest.models.*;
 import ru.aakhm.inflationrest.models.validation.except.person.PersonNotFoundException;
 import ru.aakhm.inflationrest.models.validation.except.product.ProductNotFoundException;
 import ru.aakhm.inflationrest.models.validation.except.productcategory.ProductCategoryNotFoundException;
@@ -26,6 +23,7 @@ import ru.aakhm.inflationrest.security.Role;
 import ru.aakhm.inflationrest.utils.Utils;
 
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -116,6 +114,31 @@ public class PurchasesService implements ExternalIdService<PurchaseInDTO, Purcha
     public PurchaseOutDTO getByExternalId(String externalId) {
         return purchasesRepo.getByExternalId(externalId).map(this::fromPurchaseToPurchaseOutDTO)
                 .orElseThrow(() -> new PurchaseNotFoundException(utils.getMessageFromBundle("purchase.notfound.err")));
+    }
+
+    public boolean isPresentByPurchasedAtAndProductAndStoreAndPerson(Date date, String productName, String productCatName, String storeName) {
+        Optional<ProductCategory> pc = productCategoriesRepo.getByName(productCatName);
+        Optional<Product> product = productsRepo.getProductByNameAndCategory(productName, pc.orElseThrow(() -> new ProductCategoryNotFoundException(
+                utils.getMessageFromBundle("productcategory.notfound.err"))));
+        Optional<Store> store = storesRepo.getByName(storeName);
+        Person person = null;
+
+        Principal principal = SecurityContextHolder.getContext().getAuthentication();
+
+        if (principal != null) {
+            person =
+                    peopleRepo.getByLogin(principal.getName())
+                            .orElseThrow(() -> new PersonNotFoundException(
+                                    utils.getMessageFromBundle("person.notfound.err")));
+        }
+
+        Optional<Purchase> presentedPurchase = purchasesRepo.getByPurchasedAtAndProductAndStoreAndPerson(
+                date,
+                product.orElseThrow(() -> new ProductNotFoundException(utils.getMessageFromBundle("product.notfound.err"))),
+                store.orElseThrow(() -> new StoreNotFoundException(utils.getMessageFromBundle("store.notfound.err"))),
+                person);
+
+        return presentedPurchase.isPresent();
     }
 
     // ========

@@ -5,15 +5,18 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import ru.aakhm.inflationrest.dto.in.PurchaseInDTO;
+import ru.aakhm.inflationrest.services.PurchasesService;
 import ru.aakhm.inflationrest.utils.Utils;
 
 @Component
 public class PurchaseInDTOValidator implements Validator {
     private final Utils utils;
+    private final PurchasesService purchasesService;
 
     @Autowired
-    public PurchaseInDTOValidator(Utils utils) {
+    public PurchaseInDTOValidator(Utils utils, PurchasesService purchasesService) {
         this.utils = utils;
+        this.purchasesService = purchasesService;
     }
 
     @Override
@@ -38,6 +41,16 @@ public class PurchaseInDTOValidator implements Validator {
         }
         if (purchaseInDTO.getStore().getName() == null) {
             errors.rejectValue("store.name", utils.getMessageFromBundle("store.name.null.err"));
+            return;
+        }
+        if (purchasesService.isPresentByPurchasedAtAndProductAndStoreAndPerson(
+                purchaseInDTO.getPurchasedAt(),
+                purchaseInDTO.getProduct().getName(),
+                purchaseInDTO.getProduct().getCategory().getName(),
+                purchaseInDTO.getStore().getName()
+        )) {
+            errors.rejectValue("purchasedAt",
+                    utils.getMessageFromBundle("purchase.uniq.err"));
             return;
         }
 

@@ -18,6 +18,7 @@ import ru.aakhm.inflationrest.dto.out.PurchaseOutDTO;
 import ru.aakhm.inflationrest.dto.out.StoreOutDTO;
 import ru.aakhm.inflationrest.models.*;
 import ru.aakhm.inflationrest.models.validation.except.person.PersonNotFoundException;
+import ru.aakhm.inflationrest.models.validation.except.purchase.PurchaseDeleteNotAllowedException;
 import ru.aakhm.inflationrest.models.validation.except.purchase.PurchaseNotFoundException;
 import ru.aakhm.inflationrest.models.validation.except.purchase.PurchaseUpdateNotAllowedException;
 import ru.aakhm.inflationrest.repo.*;
@@ -278,7 +279,52 @@ class PurchasesServiceTest {
     }
 
     @Test
+    void isPresentByPurchasedAtAndProductAndStoreAndPerson() {
+        // purchase не существует
+        when(purchasesRepo.getByPurchasedAtAndProductAndStoreAndPerson(any(), any(), any(), any())).thenReturn(Optional.empty());
+        when(productCategoriesRepo.getByName(any())).thenReturn(Optional.of(productCategory));
+        when(productsRepo.getProductByNameAndCategory(any(), any())).thenReturn(Optional.of(product));
+        when(storesRepo.getByName(any())).thenReturn(Optional.of(store));
+        when(peopleRepo.getByLogin(any())).thenReturn(Optional.of(personUser));
+
+        assertFalse(purchasesService.isPresentByPurchasedAtAndProductAndStoreAndPerson(PURCHASE_DATE, PRODUCT_NAME, PRODUCT_CAT_NAME, STORE_NAME));
+        verify(purchasesRepo, times(1)).getByPurchasedAtAndProductAndStoreAndPerson(any(), any(), any(), any());
+
+        // purchase существует
+        reset(purchasesRepo);
+        when(purchasesRepo.getByPurchasedAtAndProductAndStoreAndPerson(any(), any(), any(), any())).thenReturn(Optional.of(purchase));
+        assertTrue(purchasesService.isPresentByPurchasedAtAndProductAndStoreAndPerson(PURCHASE_DATE, PRODUCT_NAME, PRODUCT_CAT_NAME, STORE_NAME));
+        verify(purchasesRepo, times(1)).getByPurchasedAtAndProductAndStoreAndPerson(any(), any(), any(), any());
+    }
+
+    @Test
     void deleteByExternalId() {
+        // purchase существует
+        when(purchasesRepo.getByExternalId(PURCHASE_EXTERNAL_ID)).thenReturn(Optional.of(purchase));
+
+        //  as admin
+        SecurityContextHolder.setContext(
+                SecurityContextHolder.createEmptyContext()
+        );
+        SecurityContextHolder.getContext().setAuthentication(
+                new TestingAuthenticationToken(PURCHASE_ADMIN_LOGIN, "password", Role.ROLE_ADMIN.name())
+        );
+        assertDoesNotThrow(() -> purchasesService.deleteByExternalId(PURCHASE_EXTERNAL_ID));
+        verify(purchasesRepo, times(1)).delete(purchase);
+        //  as user
+        reset(purchasesRepo);
+        when(purchasesRepo.getByExternalId(PURCHASE_EXTERNAL_ID)).thenReturn(Optional.of(purchase));
+        SecurityContextHolder.getContext().setAuthentication(
+                new TestingAuthenticationToken(PURCHASE_USER_LOGIN, "password", Role.ROLE_USER.name())
+        );
+        assertThrows(PurchaseDeleteNotAllowedException.class, () -> purchasesService.deleteByExternalId(PURCHASE_EXTERNAL_ID));
+        verify(purchasesRepo, times(0)).delete(purchase);
+
+        // purchase не существует
+        reset(purchasesRepo);
+        when(purchasesRepo.getByExternalId(PURCHASE_EXTERNAL_ID)).thenReturn(Optional.empty());
+        assertThrows(PurchaseNotFoundException.class, () -> purchasesService.deleteByExternalId(PURCHASE_EXTERNAL_ID));
+        verify(purchasesRepo, times(0)).delete(purchase);
     }
 
     @Test
@@ -288,4 +334,6 @@ class PurchasesServiceTest {
     @Test
     void getByExternalId() {
     }
+
+
 }

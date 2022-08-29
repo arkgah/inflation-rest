@@ -56,5 +56,6 @@ create table purchase
     store_id     int         references store (id) on delete set null,
     memo         varchar(200),
     person_id    int         references person (id) on delete set null,
-    external_id  varchar(30) not null unique
+    external_id  varchar(30) not null unique,
+    unique (purchased_at, product_id, store_id, person_id)
 );
