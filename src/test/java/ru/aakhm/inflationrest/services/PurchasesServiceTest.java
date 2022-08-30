@@ -6,6 +6,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import ru.aakhm.inflationrest.dto.in.ProductCategoryInDTO;
@@ -27,6 +30,7 @@ import ru.aakhm.inflationrest.utils.Utils;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -165,6 +169,7 @@ class PurchasesServiceTest {
             {
                 setName(PRODUCT_NAME);
                 setCategory(productCategory);
+                setUnit(1.);
             }
         };
 
@@ -185,6 +190,7 @@ class PurchasesServiceTest {
                 });
             }
         };
+
 
     }
 
@@ -329,11 +335,36 @@ class PurchasesServiceTest {
 
     @Test
     void index() {
+        when(purchasesRepo.findAll(any(Pageable.class))).thenReturn(repoIndex());
+        when(modelMapper.map(any(Purchase.class), any())).thenReturn(purchaseOutDTO);
+
+        List<PurchaseOutDTO> resPurchases = purchasesService.index(0, 10);
+        assertNotNull(resPurchases);
+        assertEquals(repoIndex().getContent().size(), resPurchases.size());
+        verify(purchasesRepo, times(1)).findAll(any(Pageable.class));
+        verify(purchasesRepo, times(0)).findAll();
     }
 
     @Test
     void getByExternalId() {
+        // purchase существует
+        when(purchasesRepo.getByExternalId(PURCHASE_EXTERNAL_ID)).thenReturn(Optional.of(purchase));
+        when(modelMapper.map(any(Purchase.class), any())).thenReturn(purchaseOutDTO);
+
+        PurchaseOutDTO resPurchase = purchasesService.getByExternalId(PURCHASE_EXTERNAL_ID);
+        verify(purchasesRepo, times(1)).getByExternalId(any(String.class));
+        assertNotNull(resPurchase);
+        assertEquals(PURCHASE_EXTERNAL_ID, resPurchase.getExternalId());
+
+        // purchase не существует
+        reset(purchasesRepo);
+        when(purchasesRepo.getByExternalId(PURCHASE_EXTERNAL_ID)).thenReturn(Optional.empty());
+        assertThrows(PurchaseNotFoundException.class, () -> purchasesService.getByExternalId(PURCHASE_EXTERNAL_ID));
     }
 
-
+    private Page<Purchase> repoIndex() {
+        return new PageImpl<>(List.of(
+                purchase
+        ));
+    }
 }
