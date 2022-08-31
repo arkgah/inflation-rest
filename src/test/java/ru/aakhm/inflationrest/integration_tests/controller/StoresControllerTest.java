@@ -1,4 +1,4 @@
-package ru.aakhm.inflationrest.integration_tests;
+package ru.aakhm.inflationrest.integration_tests.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
