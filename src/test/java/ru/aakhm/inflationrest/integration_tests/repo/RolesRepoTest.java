@@ -25,10 +25,10 @@ class RolesRepoTest {
     private PersonRole roleUser;
     private PersonRole roleAdmin;
 
-
     @BeforeEach
     void setUp() {
         rolesRepo.deleteAll();
+        rolesRepo.flush();
 
         roleUser = new PersonRole();
         roleUser.setId(1);
@@ -44,6 +44,7 @@ class RolesRepoTest {
     @AfterEach
     void tearDown() {
         rolesRepo.deleteAll();
+        rolesRepo.flush();
     }
 
     @Test
