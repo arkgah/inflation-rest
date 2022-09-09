@@ -105,7 +105,7 @@ class ProductsRepoTest {
                 "p", "c"
         ));
         List<Product> products = res.getContent();
-        assertEquals(2, products.size());
+
         Assertions.assertThat(products)
                 .hasSize(2)
                 .extracting(Product::getName)
