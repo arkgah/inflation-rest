@@ -1,5 +1,7 @@
 package ru.aakhm.inflationrest.repo;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.aakhm.inflationrest.models.Person;
@@ -13,6 +15,8 @@ import java.util.Optional;
 
 @Repository
 public interface PurchasesRepo extends JpaRepository<Purchase, Integer> {
+    Page<Purchase> findAll(Pageable pageable);
+
     Optional<Purchase> getByExternalId(String externalId);
 
     List<Purchase> getAllByPurchasedAtBetween(Date beginDate, Date endDate);

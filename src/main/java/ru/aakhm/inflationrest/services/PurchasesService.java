@@ -104,9 +104,17 @@ public class PurchasesService implements ExternalIdService<PurchaseInDTO, Purcha
 
     // ========
     // readOnly = true methods
+
+
     @Override
-    public List<PurchaseOutDTO> index(Integer page, Integer perPage) {
-        return purchasesRepo.findAll(PageRequest.of(page != null ? page : 0, perPage, Sort.by("purchasedAt"))).getContent()
+    public List<PurchaseOutDTO> index(Integer page, Integer itemsPerPage) {
+        return index(page, itemsPerPage, false);
+    }
+
+    @Override
+    public List<PurchaseOutDTO> index(Integer page, Integer perPage, Boolean sortAsc) {
+        return purchasesRepo.findAll(PageRequest.of(page != null ? page : 0, perPage,
+                        Sort.by(sortAsc ? Sort.Direction.ASC : Sort.Direction.DESC, "purchasedAt"))).getContent()
                 .stream().map(this::fromPurchaseToPurchaseOutDTO).collect(Collectors.toList());
     }
 

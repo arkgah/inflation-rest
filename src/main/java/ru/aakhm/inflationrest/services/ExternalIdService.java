@@ -17,5 +17,9 @@ public interface ExternalIdService<InDTO, OutDTO> {
     // Реализацию следующих методов не нужно помечать @Transactional
     List<OutDTO> index(Integer page, Integer itemsPerPage);
 
+    default List<OutDTO> index(Integer page, Integer itemsPerPage, Boolean sortAsc) {
+        return index(page, itemsPerPage);
+    }
+
     OutDTO getByExternalId(String externalId);
 }

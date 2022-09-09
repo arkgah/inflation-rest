@@ -64,9 +64,10 @@ public class PurchasesController {
     @GetMapping
     public ResponseEntity<PurchasesOutDTO> index(
             @RequestParam(name = "page", required = false) Integer page,
-            @RequestParam(name = "per-page", required = false, defaultValue = "${purchases.per_page}") Integer perPage) {
+            @RequestParam(name = "per-page", required = false, defaultValue = "${purchases.per_page}") Integer perPage,
+            @RequestParam(name = "sort-asc", required = false, defaultValue = "${purchases.sort_asc}") Boolean sortAsc) {
         PurchasesOutDTO purchasesOutDTO = new PurchasesOutDTO();
-        purchasesOutDTO.setPurchases(purchasesService.index(page, perPage));
+        purchasesOutDTO.setPurchases(purchasesService.index(page, perPage, sortAsc));
         return new ResponseEntity<>(purchasesOutDTO, HttpStatus.OK);
     }
 
