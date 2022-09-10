@@ -56,7 +56,7 @@ class PurchasesRepoTest {
     }
 
     @Test
-    @Sql(value = {"/PurchasesRepoTest_before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = {"/sql/PurchasesRepoTest_before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void findAll() {
         Page<Purchase> purchases = assertDoesNotThrow(() -> purchasesRepo.findAll(PageRequest.of(0, PER_PAGE,
                 Sort.by(Sort.Direction.ASC, "purchasedAt"))));
@@ -80,7 +80,7 @@ class PurchasesRepoTest {
     }
 
     @Test
-    @Sql(value = {"/PurchasesRepoTest_before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = {"/sql/PurchasesRepoTest_before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void getByExternalId() {
         Optional<Purchase> res = assertDoesNotThrow(() -> purchasesRepo.getByExternalId(EXTERNAL_ID));
         assertNotNull(res);
@@ -93,7 +93,7 @@ class PurchasesRepoTest {
     }
 
     @Test
-    @Sql(value = {"/PurchasesRepoTest_before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = {"/sql/PurchasesRepoTest_before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void getAllByPurchasedAtBetween() {
         List<Purchase> res = assertDoesNotThrow(() -> purchasesRepo.getAllByPurchasedAtBetween(date1, date2));
         assertNotNull(res);
@@ -101,7 +101,7 @@ class PurchasesRepoTest {
     }
 
     @Test
-    @Sql(value = {"/PurchasesRepoTest_before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = {"/sql/PurchasesRepoTest_before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void getByPurchasedAtAndProductAndStoreAndPerson() {
         Person personUser = entityManager.find(Person.class, 1);
         Person personAdmin = entityManager.find(Person.class, 2);
