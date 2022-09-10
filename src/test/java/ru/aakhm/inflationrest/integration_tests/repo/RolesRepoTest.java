@@ -6,17 +6,19 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.jdbc.Sql;
 import ru.aakhm.inflationrest.models.PersonRole;
 import ru.aakhm.inflationrest.repo.RolesRepo;
 import ru.aakhm.inflationrest.security.Role;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@TestPropertySource("/application-test.properties")
 class RolesRepoTest {
 
     @Autowired
@@ -27,27 +29,14 @@ class RolesRepoTest {
 
     @BeforeEach
     void setUp() {
-        rolesRepo.deleteAll();
-        rolesRepo.flush();
-
-        roleUser = new PersonRole();
-        roleUser.setId(1);
-        roleUser.setName(Role.ROLE_USER.name());
-
-        roleAdmin = new PersonRole();
-        roleAdmin.setId(2);
-        roleAdmin.setName(Role.ROLE_ADMIN.name());
-
-        rolesRepo.saveAll(List.of(roleUser, roleAdmin));
     }
 
     @AfterEach
     void tearDown() {
-        rolesRepo.deleteAll();
-        rolesRepo.flush();
     }
 
     @Test
+    @Sql(value = {"/sql/RolesRepoTest_before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void getByName() {
         Optional<PersonRole> resUserRole = assertDoesNotThrow(() -> rolesRepo.getByName(Role.ROLE_USER.name()));
         assertTrue(resUserRole.isPresent());
