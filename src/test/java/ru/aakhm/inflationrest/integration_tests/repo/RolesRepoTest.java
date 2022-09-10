@@ -20,9 +20,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestPropertySource("/application-test.properties")
 class RolesRepoTest {
-
     @Autowired
     RolesRepo rolesRepo;
+
+    public static final String SQL_BEFORE_TEST = "/sql/RolesRepoTest_before.sql";
 
     private PersonRole roleUser;
     private PersonRole roleAdmin;
@@ -36,7 +37,7 @@ class RolesRepoTest {
     }
 
     @Test
-    @Sql(value = {"/sql/RolesRepoTest_before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = {SQL_BEFORE_TEST}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void getByName() {
         Optional<PersonRole> resUserRole = assertDoesNotThrow(() -> rolesRepo.getByName(Role.ROLE_USER.name()));
         assertTrue(resUserRole.isPresent());

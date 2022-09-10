@@ -28,6 +28,8 @@ class ProductsRepoTest {
     @Autowired
     ProductsRepo productsRepo;
 
+    public static final String SQL_BEFORE_TEST = "/sql/ProductsRepoTest_before.sql";
+
     @Autowired
     private TestEntityManager entityManager;
 
@@ -56,7 +58,7 @@ class ProductsRepoTest {
     }
 
     @Test
-    @Sql(value = {"/sql/ProductsRepoTest_before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = {SQL_BEFORE_TEST}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void getProductByNameAndCategory() {
         ProductCategory pc1 = entityManager.find(ProductCategory.class, PRODUCT_CAT_EXTERNAL_ID1);
         ProductCategory pc2 = entityManager.find(ProductCategory.class, PRODUCT_CAT_EXTERNAL_ID2);
@@ -75,7 +77,7 @@ class ProductsRepoTest {
     }
 
     @Test
-    @Sql(value = {"/sql/ProductsRepoTest_before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = {SQL_BEFORE_TEST}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void getByExternalId() {
         Optional<Product> res = assertDoesNotThrow(() -> productsRepo.getByExternalId(PRODUCT_EXTERNAL_ID1));
         assertTrue(res.isPresent());
@@ -86,7 +88,7 @@ class ProductsRepoTest {
     }
 
     @Test
-    @Sql(value = {"/sql/ProductsRepoTest_before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = {SQL_BEFORE_TEST}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void getAllByNameContainingIgnoreCaseAndCategory_NameContainingIgnoreCase() {
         Page<Product> res = assertDoesNotThrow(() -> productsRepo.getAllByNameContainingIgnoreCaseAndCategory_NameContainingIgnoreCase(
                 PageRequest.of(0, 10),

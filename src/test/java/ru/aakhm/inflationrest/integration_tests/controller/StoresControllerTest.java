@@ -29,6 +29,10 @@ class StoresControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    public static final String SQL_BEFORE_TEST = "/sql/StoresControllerTest_before.sql";
+
+    private static final String UNKNOWN_REF = "UNKNOWN";
+
     @BeforeEach
     void setUp() {
     }
@@ -39,7 +43,7 @@ class StoresControllerTest {
 
 
     @Test
-    @Sql(value = {"/sql/StoresControllerTest_before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = {SQL_BEFORE_TEST}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void index() throws Exception {
         mockMvc.perform(get("/stores").with(anonymous())).andDo(print()).andExpect(status().isForbidden());
 
@@ -57,7 +61,7 @@ class StoresControllerTest {
     }
 
     @Test
-    @Sql(value = {"/sql/StoresControllerTest_before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = {SQL_BEFORE_TEST}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void getById() throws Exception {
         mockMvc.perform(get("/stores/s1").with(anonymous())).andDo(print()).andExpect(status().isForbidden());
 
@@ -74,7 +78,7 @@ class StoresControllerTest {
     }
 
     @Test
-    @Sql(value = {"/sql/StoresControllerTest_before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = {SQL_BEFORE_TEST}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void getByName() throws Exception {
         mockMvc.perform(get("/stores/s1").with(anonymous())).andDo(print()).andExpect(status().isForbidden());
 
@@ -90,7 +94,7 @@ class StoresControllerTest {
     }
 
     @Test
-    @Sql(value = {"/sql/StoresControllerTest_before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = {SQL_BEFORE_TEST}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void create() throws Exception {
         StoreInDTO storeInDTO = new StoreInDTO();
         storeInDTO.setName("Test");
@@ -111,7 +115,7 @@ class StoresControllerTest {
     }
 
     @Test
-    @Sql(value = {"/sql/StoresControllerTest_before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = {SQL_BEFORE_TEST}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void delete() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/stores/s1")
                 .with(anonymous())).andDo(print()).andExpect(status().isForbidden());
@@ -121,10 +125,14 @@ class StoresControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/stores/s1")
                 .with(user("admin").roles("ADMIN"))).andDo(print()).andExpect(status().isNoContent());
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/stores/" + UNKNOWN_REF)
+                .with(user("admin").roles("ADMIN"))).andDo(print()).andExpect(status().isNotFound());
+
     }
 
     @Test
-    @Sql(value = {"/sql/StoresControllerTest_before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = {SQL_BEFORE_TEST}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void update() throws Exception {
         StoreInDTO storeInDTO = new StoreInDTO();
         storeInDTO.setName("Test");

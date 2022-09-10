@@ -3,6 +3,7 @@ package ru.aakhm.inflationrest.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.aakhm.inflationrest.dto.out.ErrorDTO;
@@ -34,13 +35,13 @@ public class PeopleController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public HttpStatus delete(@PathVariable("id") String externalId) {
+    public ResponseEntity<HttpStatus> delete(@PathVariable("id") String externalId) {
         personDetailsService.delete(externalId);
-        return HttpStatus.NO_CONTENT;
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or #login == principal.getPerson().getLogin()")
+    @PostAuthorize("hasRole('ROLE_ADMIN') or returnObject.body == null ? true : returnObject.body.login == principal.getPerson().getLogin()")
     public ResponseEntity<PersonOutDTO> getByExternalId(@PathVariable("id") String externalId) {
         return new ResponseEntity<>(personDetailsService.getByExternalId(externalId), HttpStatus.OK);
     }
@@ -56,9 +57,9 @@ public class PeopleController {
 
     @PatchMapping("/{id}/role/{name}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public HttpStatus assignRole(@PathVariable("id") String externalId, @PathVariable("name") String roleName) {
+    public ResponseEntity<HttpStatus> assignRole(@PathVariable("id") String externalId, @PathVariable("name") String roleName) {
         personDetailsService.assignRole(externalId, roleName);
-        return HttpStatus.OK;
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @ExceptionHandler

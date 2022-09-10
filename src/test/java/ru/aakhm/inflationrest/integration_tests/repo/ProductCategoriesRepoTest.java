@@ -22,6 +22,8 @@ class ProductCategoriesRepoTest {
     @Autowired
     private ProductCategoriesRepo productCategoriesRepo;
 
+    public static final String SQL_BEFORE_TEST = "/sql/ProductCategoriesRepoTest_before.sql";
+
     private static final String NAME = "Продукты";
     private static final String EXTERNAL_ID = "pc1";
     private static final String UNKNOWN_REF = "UNKNOWN";
@@ -35,7 +37,7 @@ class ProductCategoriesRepoTest {
     }
 
     @Test
-    @Sql(value = {"/sql/ProductCategoriesRepoTest_before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = {SQL_BEFORE_TEST}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void getByName() {
         Optional<ProductCategory> res = assertDoesNotThrow(() -> productCategoriesRepo.getByName(NAME));
         assertTrue(res.isPresent());
@@ -46,7 +48,7 @@ class ProductCategoriesRepoTest {
     }
 
     @Test
-    @Sql(value = {"/sql/ProductCategoriesRepoTest_before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = {SQL_BEFORE_TEST}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void getByExternalId() {
         Optional<ProductCategory> res = assertDoesNotThrow(() -> productCategoriesRepo.getByExternalId(EXTERNAL_ID));
         assertTrue(res.isPresent());
