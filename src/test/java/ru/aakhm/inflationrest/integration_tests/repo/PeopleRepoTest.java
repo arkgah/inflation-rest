@@ -17,10 +17,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestPropertySource("/application-test.properties")
+@Sql(value = {"/sql/PeopleTest_before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 class PeopleRepoTest {
     @Autowired
     PeopleRepo peopleRepo;
-    public static final String SQL_BEFORE_TEST = "/sql/PeopleRepoTest_before.sql";
     private static final String LOGIN_USER = "user";
     private static final String EXTERNAL_ID = "person1";
 
@@ -31,7 +31,6 @@ class PeopleRepoTest {
     }
 
     @Test
-    @Sql(value = {SQL_BEFORE_TEST}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void getByLogin() {
         Optional<Person> resPerson = assertDoesNotThrow(() -> peopleRepo.getByLogin(LOGIN_USER));
         assertTrue(resPerson.isPresent());
@@ -42,7 +41,6 @@ class PeopleRepoTest {
     }
 
     @Test
-    @Sql(value = {SQL_BEFORE_TEST}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void getByExternalId() {
         Optional<Person> resPerson = assertDoesNotThrow(() -> peopleRepo.getByExternalId(EXTERNAL_ID));
         assertTrue(resPerson.isPresent());

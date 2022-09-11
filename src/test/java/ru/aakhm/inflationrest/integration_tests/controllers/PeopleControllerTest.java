@@ -21,14 +21,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource("/application-test.properties")
+@Sql(value = {"/sql/PeopleTest_before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 class PeopleControllerTest {
     @Autowired
     private MockMvc mockMvc;
-
-    private static final String SQL_BEFORE_TEST = "/sql/PeopleRepoTest_before.sql";
 
     private static final int PEOPLE_COUNT = 2;
     private static final String LOGIN_USER = "user";
@@ -50,7 +49,6 @@ class PeopleControllerTest {
     }
 
     @Test
-    @Sql(value = {SQL_BEFORE_TEST}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void index() throws Exception {
         mockMvc.perform(get("/people").with(anonymous())).andDo(print()).andExpect(status().isForbidden());
         mockMvc.perform(get("/people").with(user(LOGIN_USER).roles(ROLE_USER))).andDo(print()).andExpect(status().isBadRequest());
@@ -67,7 +65,6 @@ class PeopleControllerTest {
     }
 
     @Test
-    @Sql(value = {SQL_BEFORE_TEST}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void delete() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/people/" + EXT_ID_USER)
                 .with(anonymous())).andDo(print()).andExpect(status().isForbidden());
@@ -82,7 +79,6 @@ class PeopleControllerTest {
     }
 
     @Test
-    @Sql(value = {SQL_BEFORE_TEST}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @WithUserDetails(LOGIN_USER)
         // https://docs.spring.io/spring-security/site/docs/4.0.x/reference/htmlsingle/#test-method-withuserdetails
     void getByExternalId_forUser() throws Exception {
@@ -102,7 +98,6 @@ class PeopleControllerTest {
     }
 
     @Test
-    @Sql(value = {SQL_BEFORE_TEST}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @WithUserDetails(LOGIN_ADMIN)
         // https://docs.spring.io/spring-security/site/docs/4.0.x/reference/htmlsingle/#test-method-withuserdetails
     void getByExternalId_forAdmin() throws Exception {
@@ -128,7 +123,6 @@ class PeopleControllerTest {
 
 
     @Test
-    @Sql(value = {SQL_BEFORE_TEST}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @WithUserDetails(LOGIN_USER)
     void getByLogin_forUser() throws Exception {
         final String PATH = "/people/login/";
@@ -148,7 +142,6 @@ class PeopleControllerTest {
     }
 
     @Test
-    @Sql(value = {SQL_BEFORE_TEST}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @WithUserDetails(LOGIN_ADMIN)
     void getByLogin_forAdmin() throws Exception {
         final String PATH = "/people/login/";
@@ -173,7 +166,6 @@ class PeopleControllerTest {
     }
 
     @Test
-    @Sql(value = {SQL_BEFORE_TEST}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void assignRole() throws Exception {
         final String PATH_FORMAT = "/people/%s/role/%s";
         mockMvc.perform(MockMvcRequestBuilders.patch(String.format(PATH_FORMAT, EXT_ID_USER, ROLE_ADMIN))
