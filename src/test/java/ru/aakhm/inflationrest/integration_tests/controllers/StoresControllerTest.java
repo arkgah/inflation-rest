@@ -1,4 +1,4 @@
-package ru.aakhm.inflationrest.integration_tests.controller;
+package ru.aakhm.inflationrest.integration_tests.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
@@ -25,11 +25,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource("/application-test.properties")
+@Sql(value = {"/sql/StoresControllerTest_before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 class StoresControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    public static final String SQL_BEFORE_TEST = "/sql/StoresControllerTest_before.sql";
+    public static final String PATH = "/stores/";
+    public static final String NAME1 = "Пятёрочка";
+    public static final String EXT_ID1 = "s1";
+    private static final String NEW_NAME = "NEW_NAME";
 
     private static final String UNKNOWN_REF = "UNKNOWN";
 
@@ -41,15 +45,13 @@ class StoresControllerTest {
     void tearDown() {
     }
 
-
     @Test
-    @Sql(value = {SQL_BEFORE_TEST}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void index() throws Exception {
-        mockMvc.perform(get("/stores").with(anonymous())).andDo(print()).andExpect(status().isForbidden());
+        mockMvc.perform(get(PATH).with(anonymous())).andDo(print()).andExpect(status().isForbidden());
 
-        mockMvc.perform(get("/stores").with(user("admin").roles("ADMIN"))).andDo(print()).andExpect(status().isOk());
+        mockMvc.perform(get(PATH).with(user("admin").roles("ADMIN"))).andDo(print()).andExpect(status().isOk());
 
-        mockMvc.perform(get("/stores").with(user("user").roles("USER"))).andDo(print())
+        mockMvc.perform(get(PATH).with(user("user").roles("USER"))).andDo(print())
                 .andExpectAll(
                         status().isOk(),
                         content().contentType(MediaType.APPLICATION_JSON),
@@ -61,49 +63,44 @@ class StoresControllerTest {
     }
 
     @Test
-    @Sql(value = {SQL_BEFORE_TEST}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void getById() throws Exception {
-        mockMvc.perform(get("/stores/s1").with(anonymous())).andDo(print()).andExpect(status().isForbidden());
+        mockMvc.perform(get(PATH + EXT_ID1).with(anonymous())).andDo(print()).andExpect(status().isForbidden());
 
-        mockMvc.perform(get("/stores/s2").with(user("admin").roles("ADMIN"))).andDo(print()).andExpect(status().isOk());
+        mockMvc.perform(get(PATH + EXT_ID1).with(user("admin").roles("ADMIN"))).andDo(print()).andExpect(status().isOk());
 
-        mockMvc.perform(get("/stores/s3").with(user("user").roles("USER"))).andDo(print())
+        mockMvc.perform(get(PATH + EXT_ID1).with(user("user").roles("USER"))).andDo(print())
                 .andExpectAll(
                         status().isOk(),
                         content().contentType(MediaType.APPLICATION_JSON),
-                        jsonPath("$.name").value("Лента"),
-                        jsonPath("$.externalId").value("s3")
+                        jsonPath("$.externalId").value(EXT_ID1)
                 );
 
     }
 
     @Test
-    @Sql(value = {SQL_BEFORE_TEST}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void getByName() throws Exception {
-        mockMvc.perform(get("/stores/s1").with(anonymous())).andDo(print()).andExpect(status().isForbidden());
+        mockMvc.perform(get(PATH + EXT_ID1).with(anonymous())).andDo(print()).andExpect(status().isForbidden());
 
-        mockMvc.perform(get("/stores/s2").with(user("admin").roles("ADMIN"))).andDo(print()).andExpect(status().isOk());
+        mockMvc.perform(get(PATH + EXT_ID1).with(user("admin").roles("ADMIN"))).andDo(print()).andExpect(status().isOk());
 
-        mockMvc.perform(get("/stores/name/Лента").with(user("user").roles("USER"))).andDo(print())
+        mockMvc.perform(get(PATH + EXT_ID1).with(user("user").roles("USER"))).andDo(print())
                 .andExpectAll(
                         status().isOk(),
                         content().contentType(MediaType.APPLICATION_JSON),
-                        jsonPath("$.name").value("Лента"),
-                        jsonPath("$.externalId").value("s3")
+                        jsonPath("$.name").value(NAME1)
                 );
     }
 
     @Test
-    @Sql(value = {SQL_BEFORE_TEST}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void create() throws Exception {
         StoreInDTO storeInDTO = new StoreInDTO();
         storeInDTO.setName("Test");
 
-        mockMvc.perform(post("/stores").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post(PATH).contentType(MediaType.APPLICATION_JSON)
                 .with(anonymous())).andDo(print()).andExpect(status().isForbidden());
 
 
-        mockMvc.perform(post("/stores").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post(PATH).contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(storeInDTO))
                         .with(user("user").roles("USER"))).andDo(print())
                 .andExpectAll(
@@ -115,41 +112,38 @@ class StoresControllerTest {
     }
 
     @Test
-    @Sql(value = {SQL_BEFORE_TEST}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void delete() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/stores/s1")
+        mockMvc.perform(MockMvcRequestBuilders.delete(PATH + EXT_ID1)
                 .with(anonymous())).andDo(print()).andExpect(status().isForbidden());
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/stores/s1")
+        mockMvc.perform(MockMvcRequestBuilders.delete(PATH + EXT_ID1)
                 .with(user("user").roles("USER"))).andDo(print()).andExpect(status().isBadRequest());
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/stores/s1")
+        mockMvc.perform(MockMvcRequestBuilders.delete(PATH + EXT_ID1)
                 .with(user("admin").roles("ADMIN"))).andDo(print()).andExpect(status().isNoContent());
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/stores/" + UNKNOWN_REF)
+        mockMvc.perform(MockMvcRequestBuilders.delete(PATH + UNKNOWN_REF)
                 .with(user("admin").roles("ADMIN"))).andDo(print()).andExpect(status().isNotFound());
 
     }
 
     @Test
-    @Sql(value = {SQL_BEFORE_TEST}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void update() throws Exception {
         StoreInDTO storeInDTO = new StoreInDTO();
-        storeInDTO.setName("Test");
+        storeInDTO.setName(NEW_NAME);
 
-        mockMvc.perform(put("/stores/s1").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(put(PATH + EXT_ID1).contentType(MediaType.APPLICATION_JSON)
                 .with(anonymous())).andDo(print()).andExpect(status().isForbidden());
 
-        mockMvc.perform(put("/stores/s1").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(put(PATH + EXT_ID1).contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(storeInDTO))
                         .with(user("user").roles("USER"))).andDo(print())
                 .andExpectAll(
                         status().isOk(),
                         content().contentType(MediaType.APPLICATION_JSON),
-                        jsonPath("$.name").value("Test"),
+                        jsonPath("$.name").value(NEW_NAME),
                         jsonPath("$.externalId").isNotEmpty()
                 );
-
     }
 
     private static String asJsonString(final Object obj) {

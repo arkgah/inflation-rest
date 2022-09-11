@@ -1,4 +1,4 @@
-package ru.aakhm.inflationrest.integration_tests.controller;
+package ru.aakhm.inflationrest.integration_tests.controllers;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
