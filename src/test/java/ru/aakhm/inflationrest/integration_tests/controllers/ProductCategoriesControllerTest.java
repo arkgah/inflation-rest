@@ -32,11 +32,10 @@ class ProductCategoriesControllerTest {
 
     private static final String PATH = "/products/categories/";
 
-    public static final String NAME1 = "Продукты";
+    private static final String NAME1 = "Продукты";
     private static final String EXT_ID1 = "pc1";
-    public static final String UNKNOWN_REF = "UNKNOWN";
+    private static final String UNKNOWN_REF = "UNKNOWN";
     private static final String NEW_NAME = "NEW_NAME";
-
 
     @BeforeEach
     void setUp() {

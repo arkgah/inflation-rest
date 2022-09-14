@@ -14,6 +14,7 @@ import ru.aakhm.inflationrest.models.validation.ProductInDTOValidator;
 import ru.aakhm.inflationrest.models.validation.except.product.ProductNotCreatedException;
 import ru.aakhm.inflationrest.models.validation.except.product.ProductNotFoundException;
 import ru.aakhm.inflationrest.models.validation.except.product.ProductNotUpdatedException;
+import ru.aakhm.inflationrest.models.validation.except.productcategory.ProductCategoryNotFoundException;
 import ru.aakhm.inflationrest.services.ProductsService;
 import ru.aakhm.inflationrest.utils.Utils;
 
@@ -96,5 +97,20 @@ public class ProductsController {
         errorDTO.setMessage(e.getMessage());
         return new ResponseEntity<>(errorDTO, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler
+    ResponseEntity<ErrorDTO> handleException(ProductNotFoundException e) {
+        ErrorDTO errorDTO = new ErrorDTO();
+        errorDTO.setMessage(e.getMessage());
+        return new ResponseEntity<>(errorDTO, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    ResponseEntity<ErrorDTO> handleException(ProductCategoryNotFoundException e) {
+        ErrorDTO errorDTO = new ErrorDTO();
+        errorDTO.setMessage(e.getMessage());
+        return new ResponseEntity<>(errorDTO, HttpStatus.NOT_FOUND);
+    }
+
 
 }
