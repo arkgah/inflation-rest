@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource("/application-test.properties")
-@Sql(value = {"/sql/ProductsControllerTest_before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(value = {"/sql/ProductsTest_before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 class ProductsControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -57,10 +57,10 @@ class ProductsControllerTest {
                 status().isOk(),
                 content().contentType(MediaType.APPLICATION_JSON),
                 jsonPath("$.products").isArray(),
-                jsonPath("$.products", hasSize(5)),
+                jsonPath("$.products", hasSize(4)),
                 jsonPath("$.products[0:].name", hasItem("Хлеб ржаной")),
                 jsonPath("$.products[0:].name", hasItem("Кефир")),
-                jsonPath("$.products[0:].name", hasItem("Электроэнергия"))
+                jsonPath("$.products[0:].name", hasItem("Мыло"))
         );
 
         int page = 0;

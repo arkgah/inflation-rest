@@ -30,9 +30,9 @@ class StoresControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    public static final String PATH = "/stores/";
-    public static final String NAME1 = "Пятёрочка";
-    public static final String EXT_ID1 = "s1";
+    private static final String PATH = "/stores/";
+    private static final String NAME1 = "Пятёрочка";
+    private static final String EXT_ID1 = "s1";
     private static final String NEW_NAME = "NEW_NAME";
 
     private static final String UNKNOWN_REF = "UNKNOWN";
