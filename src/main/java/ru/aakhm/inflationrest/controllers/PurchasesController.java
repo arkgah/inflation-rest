@@ -11,6 +11,7 @@ import ru.aakhm.inflationrest.dto.out.PurchaseOutDTO;
 import ru.aakhm.inflationrest.dto.out.PurchasesOutDTO;
 import ru.aakhm.inflationrest.models.validation.PurchaseInDTOValidator;
 import ru.aakhm.inflationrest.models.validation.except.purchase.PurchaseNotCreatedException;
+import ru.aakhm.inflationrest.models.validation.except.purchase.PurchaseNotFoundException;
 import ru.aakhm.inflationrest.models.validation.except.purchase.PurchaseNotUpdatedException;
 import ru.aakhm.inflationrest.services.PurchasesService;
 import ru.aakhm.inflationrest.utils.Utils;
@@ -56,9 +57,9 @@ public class PurchasesController {
     }
 
     @DeleteMapping("/{id}")
-    public HttpStatus delete(@PathVariable("id") String externalId) {
+    public ResponseEntity<HttpStatus> delete(@PathVariable("id") String externalId) {
         purchasesService.deleteByExternalId(externalId);
-        return HttpStatus.NO_CONTENT;
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping
@@ -82,5 +83,12 @@ public class PurchasesController {
         ErrorDTO errorDTO = new ErrorDTO();
         errorDTO.setMessage(e.getMessage());
         return new ResponseEntity<>(errorDTO, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<ErrorDTO> handleException(PurchaseNotFoundException e) {
+        ErrorDTO errorDTO = new ErrorDTO();
+        errorDTO.setMessage(e.getMessage());
+        return new ResponseEntity<>(errorDTO, HttpStatus.NOT_FOUND);
     }
 }
